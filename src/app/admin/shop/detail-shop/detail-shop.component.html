@@ -1,0 +1,137 @@
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card-box table-responsive">
+                <div class="page-header">
+                        <h3 class="page-title">
+                            <span class="page-title-icon bg-gradient-info text-white mr-2">
+                                <i class="fa fa-bank"></i>
+                            </span>
+                            {{ 'SHOP DETAIL' | translate }}
+                        </h3>
+                    </div>
+            <div class="col-lg-12">
+                <div class="card-box detail_shop_images">
+                    <div class="detail_shop_avatar">
+                        <img src="{{ shop.avatar }}">
+                    </div>
+                    <img class="detail_shop_cover" src="{{ shop.cover }}">
+                    <button class="pull-right btn btn-gradient-danger m-b-5 m-2" (click)="deleteShop(shop.id)">
+                        <i class="fa fa-trash"></i> {{ 'DELETE' | translate }}
+                    </button>
+                    <a [routerLink]="['/shop/update', shop.id]" target="_self" class="pull-right btn btn-gradient-info m-b-5 m-2">
+                        <i class="fa fa-pencil"></i> {{ 'UPDATE' | translate }}
+                    </a>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="card m-b-20">
+                        <div class="card-header font-weight-bold">
+                            {{ 'SHOP' | translate }}
+                        </div>
+                        <div class="card-body">
+                            <blockquote class="card-bodyquote">
+                                <table class="table table-bordered table-striped">
+                                    <tbody>
+                                        <tr>
+                                            <td width="25%" class="font-weight-bold">{{ 'TITLE SHOP' | translate }}</td>
+                                            <td width="75%">{{shop.title}}</td>
+                                        </tr>
+                                        <tr *ngIf="shop.policy">
+                                            <td width="25%" class="font-weight-bold">{{ 'POLICY' | translate }}</td>
+                                            <td width="75%" class="scrollResponse" innerHTML="{{shop.policy}}"></td>
+                                        </tr>
+                                        <tr *ngIf="shop.description">
+                                            <td width="25%" class="font-weight-bold">{{ 'DESCRIPTION' | translate }}</td>
+                                            <td width="75%" class="scrollResponse" innerHTML="{{shop.description}}"></td>
+                                        </tr>
+                                        <tr>
+                                            <td width="25%" class="font-weight-bold">{{ 'SHOP BIDN' | translate }}</td>
+                                            <td width="75%">{{shop.shop_bidn}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td width="25%" class="font-weight-bold">{{ 'FRIEND URL' | translate }}</td>
+                                            <td width="75%">{{shop.friendly_url}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </blockquote>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="card m-b-20">
+                        <div class="card-header font-weight-bold">
+                            {{ 'OWNER TITLE' | translate }}
+                        </div>
+                        <div class="card-body">
+                            <blockquote class="card-bodyquote">
+                                <table class="table table-bordered table-striped">
+                                    <tbody>
+                                        <tr>
+                                            <td width="25%" class="font-weight-bold">{{ 'OWNER NAME' | translate }}</td>
+                                            <td width="75%">{{shop.owner_name}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td width="25%" class="font-weight-bold">{{ 'OWNER PHONE' | translate }}</td>
+                                            <td width="75%">{{shop.owner_phone}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td width="25%" class="font-weight-bold">{{ 'OWNER ADDRESS' | translate }}</td>
+                                            <td width="75%">{{shop.owner_address}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td width="25%" class="font-weight-bold">{{ 'OWNER SSN' | translate }}</td>
+                                            <td width="75%">{{shop.owner_ssn}}</td>
+                                        </tr>
+                                        <tr *ngIf="shop.introduce">
+                                            <td width="25%" class="font-weight-bold">{{ 'INTRODUCE' | translate }}</td>
+                                            <td width="75%" class="scrollResponse" innerHTML="{{shop.introduce}}"></td>
+                                        </tr>
+                                        <tr *ngIf="shop.contact">
+                                            <td width="25%" class="font-weight-bold">{{ 'CONTACT' | translate }}</td>
+                                            <td width="75%" class="scrollResponse" innerHTML="{{shop.contact}}"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </blockquote>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-lg-12">
+                    <div class="card-box">
+                        <a [routerLink]="['/stores/add', shop.id]" class="actionStore pull-right btn btn-outline-info m-b-5 m-2">
+                            <i class="fa fa-plus"></i> {{ 'ADD STORE' | translate }}
+                        </a>
+                        <table id="datatable" class="table table-bordered text-center">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>{{ 'TITLE STORE' | translate }}</th>
+                                    <th>{{ 'PHONE' | translate }}</th>
+                                    <th>{{ 'SHOP ADDRESS' | translate }}</th>
+                                    <th>{{ 'ACTION' | translate }}</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+                                <tr *ngFor="let store of stores">
+                                    <td>S-{{store.id}}-{{store.time_created}}</td>
+                                    <td><a [routerLink]="['/stores/update', shop.id, store.id]">{{store.title}}</a></td>
+                                    <td>{{store.store_phone}}</td>
+                                    <td>{{store.full_address}}</td>
+                                    <td> <a href="javascript:void(0);" (click)="deleteStore(store.id)" class="actionStore"><i
+                                                class="fa fa-trash"></i></a> </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div><!-- end row -->
+    </div>
+</div><!-- end col -->

@@ -1,0 +1,148 @@
+<div class="row">
+    <div class="col-12">
+        <div class="card-box table-responsive">
+            <div class="page-header">
+                <h3 class="page-title">
+                    <span class="page-title-icon bg-gradient-info text-white mr-2">
+                        <i class="fa fa-bars"></i>
+                    </span>
+                    {{ 'CATEGORY' | translate }}
+                </h3>
+            </div>
+            <div class="col-xl-auto">
+                <button [routerLink]="['./add']" target="_self" class="pull-right btn btn-outline-info btn-fw m-b-5 m-1">
+                    <i class="fa fa-plus m-r-5"></i><span>{{ 'ADD CATEGORY' | translate }}</span>
+                </button>
+                
+                <button *ngIf="customService.isAdmin" class="pull-right btn btn-outline-primary btn-fw m-b-5 m-1" data-toggle="modal" data-target="#myModal"> <i class="fa fa-filter"></i>
+                    {{ 'FILTER' | translate }}</button>
+                <div>
+                    <button *ngIf="selectAction != '0'" class="pull-right btn btn-success waves-effect waves-light m-b-5 m-1"
+                        (click)="action()"><i class="fa fa-check"></i> {{ 'ACTION' | translate }}</button>
+                </div>
+                <select *ngIf="selectedAll || selectedIdCategory.length != 0" class="custom-select pull-right m-b-5 m-1"
+                    style="width: auto;" (change)="selectedAction($event.target.value)" [(ngModel)]="selectAction">
+                    <option [value]="0">--Chọn lệnh thực thi--</option>
+                    <option [value]="1">{{ 'TURNON' | translate }}</option>
+                    <option [value]="2">{{ 'TURNOFF' | translate }}</option>
+                </select>
+            </div>
+
+            <div class="clearfix"></div>
+            <div class="col-6 offset-3 pull-right">
+                <div class="input-group mb-3">
+                  <input [(ngModel)]="keywordCategories" type="text" class="form-control" placeholder="{{ 'SEARCH' | translate }}">
+                  <div class="input-group-append">
+                    <button (click)="searchCategoriesByKeyWord()" class="btn btn-outline-secondary" type="button">{{ 'SEARCH' | translate }}</button>
+                  </div>
+                </div>
+              </div>
+            <!-- <input [(ngModel)]="keywordCategories" (keyup)="searchCategoriesByKeyWord()" placeholder="{{ 'SEARCH' | translate }}" type="text"
+                class="form-control pull-right m-2 w-25 btn-rounded"> -->
+            <table class="table table-bordered text-center">
+                <thead>
+                    <tr>
+                        <th>
+                            <div class="form-md-checkboxes">
+                                <mat-checkbox color="warn" [(ngModel)]="selectedAll" (change)="selectAllCategory()"></mat-checkbox>
+                            </div>
+                        </th>
+                        <th>#</th>
+                        <th class="cursor" (click)="sortTableByBranch('type')">{{ 'SHOP' | translate }}
+                            <i *ngIf="statusSort === false; else descSort" class="mdi mdi-sort-ascending pull-right"></i>
+                            <ng-template #descSort>
+                                <i class="mdi mdi-sort-descending pull-right"></i>
+                            </ng-template>
+                        </th>
+                        <th class="cursor" (click)="sortTableByNumber('title')">{{ 'TITLE CATEGORY' | translate }}
+                            <i *ngIf="statusSort === false; else descSort" class="mdi mdi-sort-ascending pull-right"></i>
+                            <ng-template #descSort>
+                                <i class="mdi mdi-sort-descending pull-right"></i>
+                            </ng-template>
+                        </th>
+                        <th>{{ 'IMAGE' | translate }}</th>
+                        <th class="cursor" (click)="sortTableByNumber('sort_order')">{{ 'SORT' | translate }}
+                            <i *ngIf="statusSort === false; else descSort" class="mdi mdi-sort-ascending pull-right"></i>
+                            <ng-template #descSort>
+                                <i class="mdi mdi-sort-descending pull-right"></i>
+                            </ng-template>
+                        </th>
+                        <th class="cursor" (click)="sortTableByNumber('enabled')">{{ 'STATUS' | translate }}
+                            <i *ngIf="statusSort === false; else descSort" class="mdi mdi-sort-ascending pull-right"></i>
+                            <ng-template #descSort>
+                                <i class="mdi mdi-sort-descending pull-right"></i>
+                            </ng-template>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody *ngIf="categoriesDisplay && categoriesDisplay.length > 0; else tableNoData" infinite-scroll
+                    [infiniteScrollDistance]="scrollDistance" [infiniteScrollUpDistance]="scrollUpDistance"
+                    [infiniteScrollThrottle]="throttle" (scrolled)="onScrollDown()">
+                    <tr *ngFor="let category of categoriesDisplay; let i = index">
+                        <td>
+                            <div class="form-group form-md-checkboxes">
+                                <mat-checkbox color="warn" checked="false" (change)="onValueSelectionChange($event, category.id)"
+                                    [(ngModel)]="values[category.id]" [checked]="selectedAll"></mat-checkbox>
+                            </div>
+                        </td>
+                        <td>{{ i+1 }}</td>
+                        <td>{{ category.type }}</td>
+                        <td class="text-left">
+                            <a class="text-info" [routerLink]="['/category', category.id]">
+                                {{category.parent_id ? ' - ' + category.title : category.title}}
+                            </a>
+                        </td>
+                        <td>
+                            <img *ngIf="category.parent_id == '0' || category.parent_id == ''" class="category_list_images" src="{{ category.logo }}" onError="this.src='assets/images/profile.jpg'">
+                        </td>
+                        <td>{{ category.sort_order }}</td>
+                        <td>
+                            <label *ngIf="category.enabled == '0'; else other_status" class="badge badge-gradient-danger">{{ 'CLOSE' | translate }}</label>
+                            <ng-template #other_status>
+                                <label class="badge badge-gradient-success">{{ 'ON' | translate }}</label>
+                            </ng-template>
+                        </td>
+                    </tr>
+                </tbody>
+                <ng-template #tableNoData>
+                    <tr>
+                        <td colspan="8">
+                            <h4>{{ 'NO DATA' | translate }}</h4>
+                        </td>
+                    </tr>
+                </ng-template>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">{{ 'FILTER' | translate }}</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <div class="card-box">
+                        <div class="form-group m-b-0">
+                            <label>{{ 'CATEGORY' | translate }}</label>
+                            <ng-select *ngIf="customService.isAdmin" [(ngModel)]="typeCategory" [items]="listTypeCategory"
+                             bindLabel="title" bindValue="id" class="category_search_type pull-right m-b-5 m-1">
+                            </ng-select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-danger btn-fw" data-dismiss="modal">{{ 'CLOSE' | translate }}</button>
+                    <button type="button" class="btn btn-outline-success btn-fw" (click)="changeSubtypeCategory()"
+                    data-dismiss="modal">{{ 'SAVE' | translate }}</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+</div>

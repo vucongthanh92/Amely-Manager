@@ -1,0 +1,77 @@
+<div class="row">
+    <div class="col-12">
+        <div class="card-box table-responsive">
+                <div class="page-header">
+                        <h3 class="page-title">
+                            <span class="page-title-icon bg-gradient-info text-white mr-2">
+                                <i class="mdi mdi-format-list-bulleted"></i>
+                            </span>
+                            {{ 'PRODUCT GROUP' | translate }}
+                        </h3>
+                    </div>
+            <div class="col-xl-auto">
+                <a [routerLink]="['/product-group/add']" target="_self" class="pull-right btn btn-outline-info btn-fw m-b-5 m-1">
+                    <i class="fa fa-plus"></i> {{ 'ADD' | translate }}</a>
+            </div>
+
+            <div class="clearfix"></div>
+            <input [(ngModel)]="keywordProductGroup" (keyup)="searchProductGroupByKeyWord()" placeholder="{{ 'SEARCH' | translate }}" type="text" class="form-control pull-right m-2 w-25 btn-rounded">
+            <table class="table table-bordered text-center">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th class="cursor" (click)="sortTableByBranch('title')">{{ 'TITLE PG' | translate }}
+                            <i *ngIf="statusSort === false; else descSort" class="mdi mdi-sort-ascending pull-right"></i>
+                            <ng-template #descSort>
+                                <i class="mdi mdi-sort-descending pull-right"></i>
+                            </ng-template>
+                        </th>
+                        <th class="cursor" (click)="sortTableByNumber('price')">{{ 'PRICE' | translate }}
+                            <i *ngIf="statusSort === false; else descSort" class="mdi mdi-sort-ascending pull-right"></i>
+                            <ng-template #descSort>
+                                <i class="mdi mdi-sort-descending pull-right"></i>
+                            </ng-template>
+                        </th>
+                        <th class="cursor" (click)="sortTableByNumber('percent')">{{ 'PERCENT' | translate }}
+                            <i *ngIf="statusSort === false; else descSort" class="mdi mdi-sort-ascending pull-right"></i>
+                            <ng-template #descSort>
+                                <i class="mdi mdi-sort-descending pull-right"></i>
+                            </ng-template>
+                        </th>
+                        <th class="cursor" (click)="sortTableByBranch('time_created')">{{ 'TIME CREATED' | translate }}
+                            <i *ngIf="statusSort === false; else descSort" class="mdi mdi-sort-ascending pull-right"></i>
+                            <ng-template #descSort>
+                                <i class="mdi mdi-sort-descending pull-right"></i>
+                            </ng-template>
+                        </th>
+                        <th class="cursor" (click)="sortTableByBranch('currency')">{{ 'CURRENCY' | translate }}
+                            <i *ngIf="statusSort === false; else descSort" class="mdi mdi-sort-ascending pull-right"></i>
+                            <ng-template #descSort>
+                                <i class="mdi mdi-sort-descending pull-right"></i>
+                            </ng-template>
+                        </th>
+                    </tr>
+                </thead>
+
+                <tbody *ngIf="productGroupDisplay && productGroupDisplay.length > 0; else tableNoData" infinite-scroll [infiniteScrollDistance]="scrollDistance"
+                        [infiniteScrollUpDistance]="scrollUpDistance" [infiniteScrollThrottle]="throttle" (scrolled)="onScrollDown()">
+                    <tr *ngFor="let productGroup of productGroupDisplay; let i = index">
+                        <td>{{ i + 1 }}</td>
+                        <td><a [routerLink]="['/product-group', productGroup.id]">{{ productGroup.title }}</a></td>
+                        <td>{{ productGroup.price }}</td>
+                        <td>{{ productGroup.percent }}</td>
+                        <td>{{ productGroup.time_created * 1000 | date:'dd-MM-yyyy H:mm:ss'}}</td>
+                        <td>{{ productGroup.currency }}</td>
+                    </tr>
+                </tbody>
+                <ng-template #tableNoData>
+                    <tr>
+                        <td colspan="8">
+                            <h4>{{ 'NO DATA' | translate }}</h4>
+                        </td>
+                    </tr>
+                </ng-template>
+            </table>
+        </div>
+    </div>
+</div>

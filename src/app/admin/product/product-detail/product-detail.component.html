@@ -1,0 +1,179 @@
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card-box table-responsive">
+            <div class="page-header">
+                <h3 class="page-title">
+                    <span class="page-title-icon bg-gradient-info text-white mr-2">
+                        <i class="fa fa-product-hunt"></i>
+                    </span>
+                    {{ 'PRODUCT DETAIL' | translate }}
+                </h3>
+            </div>
+            <div class="col-xl-auto">
+                <button (click)="deleteProduct()" class="pull-right btn btn-outline-danger btn-fw m-b-5 m-2">
+                    <i class="fa fa-trash"></i> {{ 'DELETE' | translate }}
+                </button>
+                <a [routerLink]="['/product/update', product.id]" target="_self" class="pull-right btn btn-outline-info btn-fw m-b-5 m-2">
+                    <i class="fa fa-pencil"></i> {{ 'UPDATE' | translate }}
+                </a>
+                <button *ngIf="product.approved == '0' || customService.isAdmin" (click)="editApproval()" class="btn btn-outline-warning btn-fw m-b-5 pull-right m-2">
+                    <i class="mdi mdi-file-image m-r-5"></i><span>{{ 'APPROVED PRODUCT' | translate }}</span>
+                </button>
+
+            </div>
+            <div class="clearfix"></div>
+            <div *ngIf="product" class="row">
+                <div class="col-md-6">
+                    <table class="table table-bordered table-striped">
+                        <tbody>
+                            <tr>
+                                <td width="25%" class="font-weight-bold">{{ 'TITLE PRODUCT' | translate }}</td>
+                                <td width="75%">{{product.title}}</td>
+                            </tr>
+                            <tr>
+                                <td width="25%" class="font-weight-bold">{{ 'PRICE' | translate }}</td>
+                                <td width="75%">{{formatPrice(product.price)}}</td>
+                            </tr>
+                            <tr>
+                                <td width="25%" class="font-weight-bold">{{ 'Storage Price' | translate }}</td>
+                                <td width="75%">{{formatPrice(product.adjourn_price)}}</td>
+                            </tr>
+                            <tr>
+                                <td width="25%" class="font-weight-bold">{{ 'SHOP' | translate }}</td>
+                                <td width="75%" *ngIf="product.shop">
+                                    {{product.shop.title}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="25%" class="font-weight-bold">{{ 'STORE CATALOG' | translate }}</td>
+                                <td *ngIf="categories" width="75%">
+                                    <div *ngFor="let category of categories.shopCategories">
+                                        - {{ category.title }}
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="25%" class="font-weight-bold">{{ 'SKU' | translate }}</td>
+                                <td width="75%">{{product.sku}}</td>
+                            </tr>
+                            <tr>
+                                <td width="25%" class="font-weight-bold">{{ 'STORAGE' | translate }}</td>
+                                <td width="75%">{{product.storage_duration}}</td>
+                            </tr>
+                            <tr *ngIf="stores.length > 0">
+                                <td width="25%" class="font-weight-bold">{{ 'QUANTITY' | translate }}</td>
+                                <td width="75%">{{stores[0].quantity}}</td>
+                            </tr>
+
+                            <tr>
+                                <td width="25%" class="font-weight-bold">{{ 'WEIGHT' | translate }}</td>
+                                <td width="75%">{{product.weight}}</td>
+                            </tr>
+                            <tr>
+                                <td width="25%" class="font-weight-bold">{{ 'URL' | translate }}</td>
+                                <td width="75%">{{product.friendly_url}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-6">
+                    <table class="table table-bordered table-striped">
+                        <tbody>
+                            <tr>
+                                <td width="25%" class="font-weight-bold">{{ 'MANUFACTURE' | translate }}</td>
+                                <td width="75%">{{product.manufacturer}}</td>
+                            </tr>
+                            <tr>
+                                <td width="25%" class="font-weight-bold">{{ 'ORIGIN' | translate }}</td>
+                                <td width="75%">{{product.origin}}</td>
+                            </tr>
+                            <tr>
+                                <td width="25%" class="font-weight-bold">{{ 'UNIT' | translate }}</td>
+                                <td width="75%">{{product.unit}}</td>
+                            </tr>
+                            <tr>
+                                <td width="25%" class="font-weight-bold">{{ 'INDUSTRY GROUP' | translate }}</td>
+                                <td width="75%">{{ productGroup.title }}</td>
+                            </tr>
+                            <tr>
+                                <td width="25%" class="font-weight-bold">{{ 'TAX' | translate }}</td>
+                                <td width="75%">{{product.tax}}</td>
+                            </tr>
+                            <tr>
+                                <td width="25%" class="font-weight-bold">{{ 'TYPE EXPIRE' | translate }}</td>
+                                <td width="75%">
+                                    <div [ngSwitch]="product.expiry_type">
+                                        <div *ngSwitchCase="'0'">{{ 'Không có hạn sử dụng' | translate }}</div>
+                                        <div *ngSwitchCase="'1'">{{ 'Hạn sử dụng tính từ ngày mua' | translate }}</div>
+                                        <div *ngSwitchCase="'2'">{{ 'Hạn sử dụng cố định' | translate }}</div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr *ngIf="product.expiry_type == '1'">
+                                <td width="25%" class="font-weight-bold">{{ 'USED TIME' | translate }}</td>
+                                <td width="75%">{{ product.duration }} {{ 'ngày' | translate }}</td>
+                            </tr>
+                            <tr *ngIf="product.expiry_type == '2'">
+                                <td width="25%" class="font-weight-bold">{{ 'USED TIME' | translate }}</td>
+                                <td width="75%">
+                                    {{ 'Từ' | translate }}: {{ product.begin_day }} - {{ 'Đến' | translate }}: {{
+                                    product.end_day }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="25%" class="font-weight-bold">{{ 'TYPE PRODUCT' | translate }}</td>
+                                <td width="75%">
+                                    <div [ngSwitch]="product.is_special">
+                                        <div *ngSwitchCase="'0'">{{ 'Normal' | translate }}</div>
+                                        <div *ngSwitchCase="'1'">{{ 'Voucher' | translate }}</div>
+                                        <div *ngSwitchCase="'2'">{{ 'Ticket' | translate }}</div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr *ngIf="product.is_special == '0'">
+                                <td width="25%" class="font-weight-bold">{{ 'MARKET CATALOG' | translate }}</td>
+                                <td width="75%" *ngIf="categories">
+                                    <div *ngFor="let category of categories.adminCategories">
+                                        - {{ category.title }}
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr *ngIf="product.is_special == '1'">
+                                <td width="25%" class="font-weight-bold">{{ 'VOUCHER CATALOG' | translate }}</td>
+                                <td width="75%">
+                                    <div *ngFor="let category of categories.adminCategories">
+                                        {{ category.title }}
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr *ngIf="product.is_special == '2'">
+                                <td width="25%" class="font-weight-bold">{{ 'TICKET CATALOG' | translate }}</td>
+                                <td width="75%">
+                                    <div *ngFor="let category of categories.adminCategories">
+                                        {{ category.title }}
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-lg-12">
+                    <div class="card-box">
+                        <label>{{ 'IMAGE' | translate }}</label>
+                        <div *ngIf="product.images" class="row">
+                            <div *ngFor="let image of product.images" class="product_image">
+                                <img src="{{ image }}" onError="this.src='assets/images/profile.jpg'" class="rounded mb-3">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div class="card-box">
+                        <label>{{ 'CONTENT' | translate }}</label>
+                        <div innerHTML="{{product.description}}"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

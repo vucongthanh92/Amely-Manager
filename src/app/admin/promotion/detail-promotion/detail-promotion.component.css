@@ -1,0 +1,34 @@
+.product_images {
+    width: 100%;
+    height: 10rem;
+    padding: 0px 5px 0px 5px;
+}
+
+.product_images img {
+    width: 100%;
+    height: 100%;
+    object-position: center;
+    object-fit: cover;
+}
+
+.product_title {
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    padding: 10px 10px 3px 10px;
+    font-size: 15px;
+    color: #35B8E3;
+    text-transform: capitalize;
+    font-weight: 500;
+}
+
+.product_price {
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    padding: 0px 10px 10px 10px;
+    color: #666;
+    font-size: 14px;
+}

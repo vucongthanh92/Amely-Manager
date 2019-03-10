@@ -1,0 +1,190 @@
+<!-- <div class="row">
+    <div class="col-sm-12">
+        <div class="form-group">
+            <div class="card-box table-responsive">
+                <div class="page-header">
+                    <h3 class="page-title">
+                        <span class="page-title-icon bg-gradient-info text-white mr-2">
+                            <i class="mdi mdi-sale"></i>
+                        </span>
+                        {{ 'EDIT PROMOTION' | translate }}
+                    </h3>
+                </div>
+                <button (click)="updatePromotion()" type="button" class="btn btn-outline-success btn-fw m-b-5 pull-right">
+                    <i class="fa fa-check"></i> {{ 'SAVE' | translate }}
+                </button>
+                <div class="clearfix"></div>
+                <ul class="nav nav-tabs nav-justified">
+                    <li class="nav-item">
+                        <a href="#home2" data-toggle="tab" aria-expanded="false" class="nav-link active">
+                            {{ 'Chương Trình Khuyến Mãi' | translate }}
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#profile2" data-toggle="tab" aria-expanded="true" class="nav-link">
+                            {{ 'Sản Phẩm Khuyến Mãi' | translate }}
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane fade show active" id="home2">
+                        <div class="row">
+                            <div class="col-8 content_form">
+                                <div class="form-group row">
+                                    <div class="col-6">
+                                        <label>{{ 'TITLE PROMOTION' | translate }}</label>
+                                        <input type="text" [(ngModel)]="requestPostPromotion.title" class="form-control">
+                                    </div>
+                                    <div class="col-6">
+                                        <label>{{ 'Loại Khuyến Mãi' | translate }}</label>
+                                        <ng-select [(ngModel)]="requestPostPromotion.time_type" [items]="listTimeType"
+                                            bindLabel="title" bindValue="id" [clearable]="false"></ng-select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <div class="col-6">
+                                        <label class="form_datetime">{{ 'Ngày Bắt Đầu' | translate }}</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" [(ngModel)]="beginDay" [readonly]=true
+                                                [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }" bsDatepicker>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <label>{{ 'Giờ Bắt Đầu' | translate }}</label>
+                                        <div class="input-group">
+                                            <timepicker [(ngModel)]="beginTime" [showMeridian]="false"></timepicker>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <div class="col-6">
+                                        <label class="form_datetime">{{ 'Ngày Kết Thúc' | translate }}</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" [(ngModel)]="endDay" [readonly]=true
+                                                [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }" bsDatepicker>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <label>{{ 'Giờ Kết Thúc' | translate }}</label>
+                                        <div class="input-group">
+                                            <timepicker [(ngModel)]="endTime" [showMeridian]="false"></timepicker>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <div class="col-6">
+                                        <label class="form_datetime">{{ 'STATUS' | translate }}</label>
+                                        <ng-select [(ngModel)]="requestPostPromotion.status" [items]="listStatus"
+                                            bindLabel="title" bindValue="id" [clearable]="false">
+                                        </ng-select>
+                                    </div>
+                                    <div *ngIf="shops && customService.userCurrent.type === 'admin'" class="col-6">
+                                        <label class="form_datetime">{{ 'Chọn Cửa Hàng' | translate }}</label>
+                                        <ng-select [(ngModel)]="requestPostPromotion.shop_id" [items]="shops" bindLabel="title"
+                                            [clearable]="false" (change)="getProductByShop()" bindValue="id" class="promotion_shop">
+                                        </ng-select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div role="tabpanel" class="tab-pane fade" id="profile2">
+                        <div class="row">
+                            <div class="col-4 content_form">
+                                <div class="form-group">
+                                    <h4 class="text-center m-b-20">{{ 'LIST PROMOTION' | translate }}</h4>
+                                    <div *ngFor="let item of requestPostPromotion.items; let i = index"
+                                        [class.selectedItem]="i === indexItem" (click)="changeIndexItem(i)" class="alert alert-info alert-dismissable">
+                                        <button *ngIf="i > 0" (click)="deleteItemPromotion(i)" type="button" class="close"
+                                            data-dismiss="alert" aria-hidden="true">×</button>
+                                        <span>Item {{ i + 1 }}</span>
+                                    </div>
+                                    <button (click)="addItemPromotion()" type="button" class="btn btn-block btn-xs btn-info waves-effect waves-light p-t-10 p-b-10">
+                                        <i class="fa fa-plus m-r-10"></i><span>{{ 'ADD ITEMS' | translate }}</span>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="col-8 content_form">
+                                <div class="form-group">
+                                    <label>{{ 'Loại Khuyến Mãi' | translate }}</label>
+                                    <ng-select [(ngModel)]="promotionItemType" [items]="listItemType" [clearable]="false"
+                                        bindLabel="title" bindValue="id" class="promotion_shop">
+                                    </ng-select>
+                                </div>
+
+                                <div *ngIf="promotionItemType === '0'" class="form-group">
+                                    <label>{{ 'Giá Khuyến Mãi' | translate }}</label>
+                                    <input type="number" min="0" [(ngModel)]="promotionItemPrice" (change)="changeValuePromotionItem('price')"
+                                        class="form-control">
+                                </div>
+
+                                <div *ngIf="promotionItemType === '1'" class="form-group">
+                                    <label>{{ 'Phần Trăm Khuyến Mãi' | translate }}</label>
+                                    <input type="number" min="0" [(ngModel)]="promotionItemPercent" (change)="changeValuePromotionItem('percent')"
+                                        class="form-control">
+                                </div>
+
+                                <div class="form-group">
+                                    <label>{{ 'Chọn Sản Phẩm' | translate }}</label>
+                                    <div *ngIf="!product.id">
+                                        <button class="btn btn-icon waves-effect waves-light add_product" data-toggle="modal"
+                                            data-target="#modalListProduct">
+                                            <i class="fa fa-plus"></i>
+                                        </button>
+                                    </div>
+                                    <div *ngIf="product.id" data-toggle="modal" data-target="#modalListProduct" class="choose_product">
+                                        <div class="choose_product_image">
+                                            <img src="{{ product.images[0] }}">
+                                        </div>
+                                        <div class="choose_product_info">
+                                            <div class="choose_product_title">
+                                                {{ product.title }}
+                                            </div>
+                                            <div class="choose_product_price">
+                                                {{ product.price | currency:'VND':'' }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modalListProduct" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">{{ 'LIST PRODUCT' | translate }}</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+                <div *ngIf="products; else emptyProduct" class="form-group row">
+                    <ng-container *ngFor="let product of products">
+                        <div *ngIf="product.sale_price === '0'" (click)="chooseProduct(product)" data-dismiss="modal"
+                            class="col-3">
+                            <div *ngIf="product.images.length > 0" class="product_images">
+                                <img src="{{ product.images[0] }}">
+                            </div>
+                            <div class="product_title">{{ product.title }}</div>
+                            <div class="product_price">{{ product.price | currency:'VND':'' }}</div>
+                        </div>
+                    </ng-container>
+                </div>
+                <ng-template #emptyProduct>
+                    <div>{{ 'Không có sản phẩm' | translate }}</div>
+                </ng-template>
+            </div>
+        </div>
+    </div>
+</div> -->

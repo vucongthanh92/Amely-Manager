@@ -1,0 +1,127 @@
+<div class="row">
+  <div class="col-lg-8">
+    <div class="card-box">
+
+      <h4 class="header-title m-t-0 m-b-30">{{ 'UPDATE PROFILE' | translate }}</h4>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="p-20">
+            <div class="form-group">
+              <label>{{ 'NAME' | translate }}</label>
+              <input type="text" placeholder="" class="form-control">
+            </div>
+            <div class="form-group">
+              <label>{{ 'BIRTHDAY' | translate }}</label>
+              <input type="number" placeholder="" class="form-control">
+            </div>
+            <div class="form-group">
+              <label>{{ 'SEX' | translate }}</label>
+              <input type="text" placeholder="" class="form-control">
+            </div>
+            <div class="form-group">
+              <label>{{ 'STORAGE' | translate }}</label>
+              <input type="number" placeholder="" class="form-control">
+            </div>
+            <div class="form-group">
+              <label>{{ 'QUANTITY' | translate }}</label>
+              <input type="number" placeholder="" class="form-control">
+            </div>
+            <div class="form-group">
+              <label>{{ 'WEIGHT' | translate }}</label>
+              <div class="input-group">
+                <input type="number" placeholder="" class="form-control">
+                <div class="input-group-append">
+                  <span class="input-group-text">KG</span>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>{{ 'MANUFACTURE' | translate }}</label>
+              <input type="text" placeholder="" class="form-control">
+            </div>
+          </div>
+        </div>
+        <!-- end col -->
+
+        <div class="col-md-6">
+          <div class="p-20">
+
+            <div class="form-group">
+              <label>{{ 'URL' | translate }}</label>
+              <input type="text" placeholder="" class="form-control">
+            </div>
+            <div class="form-group">
+              <label>{{ 'TAX' | translate }}</label>
+              <input type="number" placeholder="" class="form-control">
+            </div>
+            <div class="form-group">
+              <label>{{ 'UNIT' | translate }}</label>
+              <input type="text" placeholder="" class="form-control">
+            </div>
+            <div class="form-group">
+              <label>{{ 'ORIGIN' | translate }}</label>
+              <input type="text" placeholder="" class="form-control">
+            </div>
+
+            <div class="form-group">
+              <label>{{ 'INDUSTRY GROUP' | translate }}</label>
+              <select class="form-control">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label>{{ 'EXPIRY DATE' | translate }}</label>
+              <select class="form-control">
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>{{ 'ATTRIBUTE NAME' | translate }}</label>
+              <select id="tags" multiple data-role="tagsinput">
+                <option value="aaaaa">aaaaa</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <!-- end row -->
+
+    </div>
+  </div>
+  <!-- end col -->
+
+  <div class="col-lg-4">
+    <div class="row">
+
+      <div class="col-md-12">
+        <div class="card-box">
+          <div class="form-group">
+            <label>{{ 'IMAGE' | translate }}</label><br>
+            <input type="file" multiple (change)="detectFiles($event)">
+            <div>
+              <img *ngFor="let url of urls" [src]="url" class="rounded mb-3 m-2"
+                width="100" height="100" >
+            </div>
+          </div>
+          <div class="form-group">
+              <label>{{ 'ADDRESS' | translate }}</label>
+              <agm-map [latitude]="lat" [longitude]="lng" class="gmaps">
+                  <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
+              </agm-map>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- end col -->
+</div>

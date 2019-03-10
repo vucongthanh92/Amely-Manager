@@ -1,0 +1,239 @@
+<div class="topbar">
+    <div class="topbar-left">
+        <!-- <div>
+            <ul class="list-unstyled pull-left">
+                <li>
+                    <a href="javascript:void(0);">
+                        <img (click)="setLang('vi')" src="assets/flags/vn.png">
+                    </a>
+                    <a href="javascript:void(0);">
+                        <img (click)="setLang('en')" src="assets/flags/us.png">
+                    </a>
+                </li>
+            </ul>
+        </div> -->
+        <div class="clearfix"></div>
+        <a href="#" class="logo"><span>Amely</span><i class="mdi mdi-layers"></i></a>
+    </div>
+
+    <div class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <ul class="nav navbar-nav list-inline navbar-left">
+                <li class="list-inline-item">
+                    <button class="button-menu-mobile open-left">
+                        <i class="mdi mdi-menu"></i>
+                    </button>
+                </li>
+                <!-- <li class="list-inline-item">
+                    <ol class="breadcrumb m-b-20">
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">Library</li>
+                    </ol>
+                </li> -->
+            </ul>
+            <!-- <nav class="navbar-custom">
+                <ul class="list-unstyled topbar-right-menu float-right mb-0">
+                    <li>
+                        <div class="notification-box">
+                            <ul class="list-inline mb-0">
+                                <li>
+                                    <a href="javascript:void(0);" class="right-bar-toggle">
+                                        <i class="mdi mdi-bell-outline noti-icon"></i>
+                                    </a>
+                                    <div class="noti-dot">
+                                        <span class="dot"></span>
+                                        <span class="pulse"></span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="hide-phone">
+                        <form class="app-search">
+                            <input type="text" placeholder="Search..." class="form-control">
+                            <button type="submit"><i class="fa fa-search"></i></button>
+                        </form>
+                    </li>
+                </ul>
+            </nav> -->
+        </div>
+    </div>
+</div>
+
+<div class="left side-menu">
+    <div class="sidebar-inner slimscrollleft">
+        <div class="user-box">
+            <div class="user-img">
+                <a data-toggle="modal" data-target="#myModalProfile" [routerLink]="">
+                    <img src="{{ icon }}" alt="user-img" class="rounded-circle img-thumbnail img-responsive imgAvatar">
+                </a>
+                <div class="user-status offline"><i class="mdi mdi-adjust"></i></div>
+            </div>
+            <h5>{{ 'WELCOME' | translate }} <a [routerLink]="" data-toggle="modal" data-target="#myModalProfile" style="color:#188ae2">{{fullname}}</a> ! </h5>
+            <ul class="list-inline">
+                <li class="list-inline-item">
+                    <div class="dropdown">
+                        <a href="#" class="dropdown-toggle arrow-none card-drop" data-toggle="dropdown" aria-expanded="false">
+                            <i class="mdi mdi-settings"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right text-center">
+                            <label for="">{{ 'LANGUAGE' | translate }} : </label>
+                            <a href="javascript:void(0);">
+                                <img (click)="setLang('vi')" src="assets/flags/vn.png">
+                            </a>
+                            <a href="javascript:void(0);">
+                                <img (click)="setLang('en')" src="assets/flags/us.png">
+                            </a>
+                        </div>
+                    </div>
+                </li>
+                <li class="list-inline-item">
+                    <a (click)="logOut()" class="text-custom">
+                        <i class="mdi mdi-power"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div id="sidebar-menu">
+            <ul>
+                <li class="has_sub" *ngIf="isDashboard">
+                    <a class="waves-effect" [routerLink]="['/dashboard']">
+                        <i class="mdi mdi-view-dashboard waves-effect"></i>
+                        <span>{{ 'DASHBOARD' | translate }}</span>
+                    </a>
+                </li>
+                <li class="has_sub" *ngIf="isShop">
+                    <a *ngIf="userCurrent.type == 'admin'; else manager" class="waves-effect" [routerLink]="['/shop']"
+                        target="_self">
+                        <i class="mdi mdi-google-pages waves-effect"></i>
+                        <span>{{ 'SHOP' | translate }} </span>
+                    </a>
+                    <ng-template #manager>
+                        <a class="waves-effect" [routerLink]="['/shop', userCurrentShop]" target="_self">
+                            <i class="mdi mdi-google-pages waves-effect"></i>
+                            <span>{{ 'SHOP' | translate }} </span>
+                        </a>
+                    </ng-template>
+                </li>
+                <li class="has_sub" *ngIf="isCategory">
+                    <a class="waves-effect" [routerLink]="['/category']" target="_self">
+                        <i class="mdi mdi-google-pages waves-effect"></i>
+                        <span>{{ 'CATEGORY' | translate }}</span>
+                    </a>
+                </li>
+
+                <!-- <li class="has_sub">
+                    <a href="javascript:void(0);" class="left_menu">
+                        <i class="mdi mdi-texture"></i>{{ 'PRODUCT' | translate }} 
+                    </a>
+                    <ul class="list-unstyled">
+                        <li><a [routerLink]="['/product/non-approval']"><i class="mdi mdi-texture"></i>{{ 'Chưa Phê Duyệt' | translate }}</a></li>
+                        <li><a [routerLink]="['/product/approved']"><i class="mdi mdi-texture"></i>{{ 'Đã Phê Duyệt' | translate }}</a></li>
+                        <li><a [routerLink]="['/product/quantity']"><i class="mdi mdi-texture"></i>{{ 'QUANTITY' | translate }}</a></li>
+                    </ul>
+                </li> -->
+                <li class="has_sub" *ngIf="isProduct">
+                    <a class="waves-effect" [routerLink]="['/product']" target="_self">
+                        <i class="mdi mdi-google-pages waves-effect"></i>
+                        <span>{{ 'PRODUCT' | translate }} </span>
+                    </a>
+                </li>
+
+                <li class="has_sub" *ngIf="isProductGroup">
+                    <a class="waves-effect" [routerLink]="['/product-group']" target="_self">
+                        <i class="mdi mdi-google-pages waves-effect"></i>
+                        <span>{{ 'PRODUCT GROUP' | translate }} </span>
+                    </a>
+                </li>
+                <li class="has_sub" *ngIf="isPromotion">
+                    <a class="waves-effect" [routerLink]="['/promotion']" target="_self">
+                        <i class="mdi mdi-google-pages waves-effect"></i>
+                        <span>{{ 'PROMOTION' | translate }} </span>
+                    </a>
+                </li>
+                <li class="has_sub" *ngIf="isAdvertise">
+                    <a class="waves-effect" [routerLink]="['/advertise']" target="_self">
+                        <i class="mdi mdi-google-pages waves-effect"></i>
+                        <span>{{ 'ADVERTISE' | translate }}</span>
+                    </a>
+                </li>
+                <li class="has_sub" *ngIf="isOrder">
+                    <a class="waves-effect" [routerLink]="['/orders']" target="_self">
+                        <i class="mdi mdi-google-pages waves-effect"></i>
+                        <span>{{ 'ORDERS' | translate }} </span>
+                    </a>
+                </li>
+                <li class="has_sub" *ngIf="isDelivery">
+                    <a class="waves-effect" [routerLink]="['/delivery']" target="_self">
+                        <i class="mdi mdi-google-pages waves-effect"></i>
+                        <span>{{ 'DELIVERY' | translate }} </span>
+                    </a>
+                </li>
+                <li class="has_sub" *ngIf="isRedeem">
+                    <a class="waves-effect" [routerLink]="['/redeem']" target="_self">
+                        <i class="mdi mdi-google-pages waves-effect"></i>
+                        <span>{{ 'REDEEM' | translate }}</span>
+                    </a>
+                </li>
+                <li class="has_sub" *ngIf="isFinance">
+                    <a class="waves-effect" [routerLink]="['/finance']" target="_self">
+                        <i class="mdi mdi-google-pages waves-effect"></i>
+                        <span>{{ 'FINANCE' | translate }}</span>
+                    </a>
+                </li>
+                <li class="has_sub" *ngIf="isUser">
+                    <a class="waves-effect" [routerLink]="['/admin/user']" target="_self">
+                        <i class="mdi mdi-google-pages waves-effect"></i>
+                        <span>{{ 'USER' | translate }}</span>
+                    </a>
+                </li>
+                <li class="has_sub" *ngIf="isSystem">
+                    <a class="waves-effect" [routerLink]="['/admin/system']" target="_self">
+                        <i class="mdi mdi-google-pages waves-effect"></i>
+                        <span>{{ 'SYSTEM' | translate }}</span>
+                    </a>
+                </li>
+                <li class="has_sub" *ngIf="isPermission">
+                    <a class="waves-effect" [routerLink]="['/admin/permission']" target="_self">
+                        <i class="mdi mdi-google-pages waves-effect"></i>
+                        <span>{{ 'PERMISSION' | translate }}</span>
+                    </a>
+                </li>
+                <!-- <li class="has_sub" *ngIf="customService.isAdmin">
+                    <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-chart-donut-variant"></i><span>
+                            {{ 'CONFIG' | translate }} </span> <span class="menu-arrow"></span></a>
+                    <ul class="list-unstyled">
+                        <li><a [routerLink]="['/admin/system/general']">{{ 'SETTING' | translate }}</a></li>
+                        <li><a [routerLink]="['/admin/system/permission']">{{ 'POLICY' | translate }}</a></li>
+                        <li><a [routerLink]="['/admin/system/permission']">{{ 'ACTIVATE' | translate }}</a></li>
+                        <li><a [routerLink]="['/admin/system/permission']">{{ 'CENSORSHIP' | translate }}</a></li>
+                        <li><a [routerLink]="['/admin/system/permission']">{{ 'INTEGRATED' | translate }}</a></li>
+                        <li><a [routerLink]="['/admin/system/permission']">{{ 'STATIC PAGE' | translate }}</a></li>
+                        <li><a [routerLink]="['/admin/system/permission']">{{ 'WEBSITE' | translate }}</a></li>
+                        <li><a [routerLink]="['/admin/system/permission']">{{ 'EXCEL FILE' | translate }}</a></li>
+                    </ul>
+                </li> -->
+            </ul>
+            <div class="clearfix"></div>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div>
+
+<div id="myModalProfile" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+                <div class="card">
+                    <img src="{{ icon }}" alt="{{ fullname }}" class="imgProfile">
+                    <h1>{{ fullname }}</h1>
+                    <p class="title">{{ type }}</p>
+                    <p>{{ phone }}</p>
+                    <p><button [routerLink]="['/profile']" data-dismiss="modal">{{ 'PROFILE' | translate }}</button></p>
+                </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+</div>

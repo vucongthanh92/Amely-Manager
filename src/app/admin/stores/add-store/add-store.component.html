@@ -1,0 +1,97 @@
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card-box">
+                <div class="page-header">
+                        <h3 class="page-title">
+                            <span class="page-title-icon bg-gradient-info text-white mr-2">
+                                <i class="fa fa-bank"></i>
+                            </span>
+                            {{ 'ADD STORE' | translate }}
+                        </h3>
+                    </div>
+            <div class="col-xl-auto">
+                <a (click)="createStore()" target="_self" class="pull-right btn btn-outline-success btn-fw" [ladda]="isLoading"><i class="fa fa-check"></i> {{ 'SAVE' | translate }}</a>
+            </div>
+            <div class="clearfix"></div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="p-20">
+                        <div class="form-group">
+                            <label>{{ 'TITLE STORE' | translate }}</label>
+                            <input [(ngModel)]="title" type="text" placeholder="" class="form-control">
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="p-20">
+                        <div class="form-group">
+                            <label>{{ 'PHONE' | translate }}</label>
+                            <input type="text" [(ngModel)]="store_phone" [pattern]="customService.phonePattern" #phonePattern="ngModel" class="form-control">
+                            <p style="color: red" *ngIf="phonePattern.errors?.pattern"> 
+                                {{ 'PHONEPATTERN' | translate }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- end col -->
+
+                <div class="col-md-12">
+                    <div class="p-20">
+                        <div class="form-group">
+                            <label>{{ 'DESCRIPTION' | translate }}</label>
+                            <editor [(ngModel)]="description"></editor>
+                        </div>
+                    </div>
+                </div>
+                <!-- end col -->
+
+            </div>
+            <!-- end row -->
+        </div>
+
+    </div>
+    <!-- end col -->
+    <div class="col-lg-4">
+        <div class="card-box">
+            <div class="clearfix"></div>
+            <div class="p-20">
+                <div class="form-group">
+                    <label>{{ 'SHOP ADDRESS' | translate }}</label>
+                    <agm-map [latitude]="lat" [longitude]="lng" class="gmaps">
+                        <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
+                    </agm-map>
+                </div>
+                <div class="form-group">
+                    <label>{{ 'ADDRESS' | translate }} <label class="">*</label></label>
+                    <input type="text" placeholder="" [(ngModel)]="store_address" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>{{ 'PROVINCE' | translate }}</label>
+                    <select class="form-control" (ngModelChange)="onProvinceChange($event)" [(ngModel)]="province">
+                        <optgroup label="PROVINCES">
+                            <option *ngFor="let province of provinces" [ngValue]="province">{{ province.name }}</option>
+                        </optgroup>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>{{ 'DISTRICT' | translate }}</label>
+                    <select class="form-control" (ngModelChange)="onDistrictChange($event)" [(ngModel)]="district">
+                        <optgroup label="DISTRICTS">
+                            <option *ngFor="let district of districts" [ngValue]="district">{{ district.name }}</option>
+                        </optgroup>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>{{ 'WARD' | translate }}</label>
+                    <select class="form-control" (ngModelChange)="onWardChange($event)" [(ngModel)]="ward">
+                        <optgroup label="WARDS">
+                            <option *ngFor="let ward of wards" [ngValue]="ward">{{ ward.name }}</option>
+                        </optgroup>
+                    </select>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

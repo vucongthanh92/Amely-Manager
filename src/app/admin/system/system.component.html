@@ -1,0 +1,111 @@
+<div class="row">
+    <div class="col-12">
+        <div class="card-box table-responsive">
+            <div class="col-xl-auto">
+                <h4 class="page-title">{{ 'SYSTEM' | translate }}</h4>
+                <a data-toggle="modal" data-target="#myModalAdd" class="pull-right btn btn-outline-info btn-fw m-b-5 m-1">
+                    <i class="fa fa-plus"></i> {{ 'ADD' | translate }}</a>
+
+            </div>
+
+            <div class="clearfix"></div>
+            <table id="datatable" class="table table-bordered text-center">
+                <thead>
+                    <tr>
+                        <th>{{ 'ID' | translate }}</th>
+                        <th>{{ 'TITLE SYSTEM' | translate }}</th>
+                        <th>{{ 'KEY SYSTEM' | translate }}</th>
+                        <th>{{ 'TIME CREATED' | translate }}</th>
+                        <th>{{ 'VALUE SYSTEM' | translate }}</th>
+                    </tr>
+                </thead>
+
+                <tbody *ngIf="systems">
+                    <tr *ngFor="let system of systems" (click)="selectSystem(system)" data-toggle="modal" data-target="#myModalUpdate">
+                        <td>{{system.id}}</td>
+                        <td>
+                            {{system.title}}
+                        </td>
+                        <td>
+                            {{system.name}}
+                        </td>
+                        <td>{{system.time_created * 1000 | date:'dd-MM-yyyy H:mm:ss'}}</td>
+                        <td>{{system.value}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div id="myModalAdd" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">{{ 'ADD SYSTEM' | translate }}</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <div class="card-box">
+                        <div class="form-group m-b-0">
+                            <label>{{ 'TITLE SYSTEM' | translate }}</label>
+                            <input type="text" placeholder="" [(ngModel)]="titleAdd" class="form-control">
+                        </div>
+                        <div class="form-group m-b-0">
+                            <label>{{ 'KEY SYSTEM' | translate }}</label>
+                            <input type="text" placeholder="" [(ngModel)]="nameAdd" class="form-control">
+                        </div>
+                        <div class="form-group m-b-0">
+                            <label>{{ 'VALUE SYSTEM' | translate }}</label>
+                            <input type="number" placeholder="" [(ngModel)]="valueAdd" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-danger btn-fw" data-dismiss="modal">{{ 'CLOSE' | translate }}</button>
+                        <button type="button" class="btn btn-outline-success btn-fw" (click)="addSystem()" data-dismiss="modal">{{ 'SAVE' | translate }}</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+</div>
+
+<div id="myModalUpdate" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">{{ 'UPDATE SYSTEM' | translate }}</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <div class="card-box">
+                        <div class="form-group m-b-0">
+                            <label>{{ 'TITLE SYSTEM' | translate }}</label>
+                            <input type="text" placeholder="" [(ngModel)]="title" class="form-control">
+                        </div>
+                        <div class="form-group m-b-0">
+                            <label>{{ 'KEY SYSTEM' | translate }}</label>
+                            <input type="text" placeholder="" [(ngModel)]="name" class="form-control">
+                        </div>
+                        <div class="form-group m-b-0">
+                            <label>{{ 'VALUE SYSTEM' | translate }}</label>
+                            <input type="text" placeholder="" [(ngModel)]="value" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-danger btn-fw" data-dismiss="modal">{{ 'CLOSE' | translate }}</button>
+                        <button type="button" class="btn btn-outline-success btn-fw" (click)="updateSystem()" data-dismiss="modal">{{ 'SAVE' | translate }}</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+</div>

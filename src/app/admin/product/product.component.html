@@ -1,0 +1,260 @@
+<div class="row">
+  <div class="col-12">
+    <div class="card-box table-responsive">
+        <div class="page-header">
+            <h3 class="page-title">
+                <span class="page-title-icon bg-gradient-info text-white mr-2">
+                    <i class="fa fa-product-hunt"></i>
+                </span>
+                {{ 'PRODUCT' | translate }}
+            </h3>
+        </div>
+      <div class="row">
+          <div class="col-12">
+            <button [routerLink]="['/product/add']" class="pull-right btn btn-outline-info m-b-5 m-1">
+              <i class="fa fa-plus m-r-5"></i>
+              <span>{{ 'ADD PRODUCT' | translate }}</span>
+            </button>
+    
+            <button class="btn btn-outline-success m-b-5 pull-right m-1" data-toggle="modal" data-target="#importExcelModal">
+              <i class="mdi mdi-file-excel m-r-5"></i>
+              <span>{{ 'IMPORT' | translate }}</span>
+            </button>
+    
+            <button [routerLink]="['/product/quantity']" class="btn btn-outline-danger m-b-5 pull-right m-1">
+              <i class="mdi mdi-file-image m-r-5"></i>
+              <span>{{ 'QUANTITY' | translate }}</span>
+            </button>
+    
+            <button class="pull-right btn btn-outline-primary btn-fw m-b-5 m-1" data-toggle="modal" data-target="#filterModal">
+              <i class="fa fa-filter m-r-5"></i>
+              <span>{{ 'FILTER' | translate }}</span>
+            </button>
+    
+            <button *ngIf="selectAction != '0'" class="pull-right btn btn-success waves-effect waves-light m-b-5 m-1"
+                (click)="action()"><i class="fa fa-check"></i> {{ 'ACTION' | translate }}</button>
+            <select *ngIf="selectedAll || productId.length != 0" class="custom-select pull-right m-b-5 m-1" style="width: auto;"
+              (change)="selectedAction($event.target.value)" [(ngModel)]="selectAction">
+              <option [value]="0">--Chọn lệnh thực thi--</option>
+              <option [value]="1">{{ 'TURNON' | translate }}</option>
+              <option [value]="2">{{ 'TURNOFF' | translate }}</option>
+              <option [value]="3">{{ 'DELETE' | translate }}</option>
+              <option *ngIf="customService.isApprovalProduct && customService.isAdmin" [value]="4">{{ 'APPROVED PRODUCT' | translate }}</option>
+            </select>
+          </div>
+          <div class="col-3">
+            <p>{{ 'TOTAL' | translate }} {{count}} {{ 'PRODUCT' | translate }}</p>
+          </div>
+          <div class="col-6 offset-3">
+            <div class="input-group mb-3">
+              <input [(ngModel)]="keywordProduct" type="text" class="form-control" placeholder="{{ 'SEARCH' | translate }}">
+              <div class="input-group-append">
+                <button (click)="searchProductByKeyWord()" class="btn btn-outline-secondary" type="button">{{ 'SEARCH' | translate }}</button>
+              </div>
+            </div>
+          </div>
+      </div>
+      <table class="table table-bordered text-center">
+        <thead>
+          <tr>
+            <th>
+              <mat-checkbox color="warn" [(ngModel)]="selectedAll" (change)="selectAllProduct()"></mat-checkbox>
+            </th>
+            <th>#</th>
+            <th class="cursor" (click)="sortTableByBranch('sku')">{{ 'SKU' | translate }}
+              <i *ngIf="statusSort === false; else descSort" class="mdi mdi-sort-ascending pull-right"></i>
+              <ng-template #descSort>
+                <i class="mdi mdi-sort-descending pull-right"></i>
+              </ng-template>
+            </th>
+            <th class="cursor" (click)="sortTableByBranch('title')">
+              {{ 'TITLE PRODUCT' | translate }}
+              <i *ngIf="statusSort === false; else descSort" class="mdi mdi-sort-ascending pull-right"></i>
+              <ng-template #descSort>
+                <i class="mdi mdi-sort-descending pull-right"></i>
+              </ng-template>
+            </th>
+            <th>{{ 'IMAGE' | translate }}</th>
+            <th class="cursor" (click)="sortTableByBranch('quantity')">
+              {{ 'QUANTITY' | translate }}
+              <i *ngIf="statusSort === false; else descSort" class="mdi mdi-sort-ascending pull-right"></i>
+              <ng-template #descSort>
+                <i class="mdi mdi-sort-descending pull-right"></i>
+              </ng-template>
+            </th>
+            <th class="cursor" (click)="sortTableByBranch('price')">
+              {{ 'PRICE' | translate }}
+              <i *ngIf="statusSort === false; else descSort" class="mdi mdi-sort-ascending pull-right"></i>
+              <ng-template #descSort>
+                <i class="mdi mdi-sort-descending pull-right"></i>
+              </ng-template>
+            </th>
+            <th class="cursor" (click)="sortTableByBranch('is_special')">
+              {{ 'TYPE PRODUCT' | translate }}
+              <i *ngIf="statusSort === false; else descSort" class="mdi mdi-sort-ascending pull-right"></i>
+              <ng-template #descSort>
+                <i class="mdi mdi-sort-descending pull-right"></i>
+              </ng-template>
+            </th>
+            <th class="cursor" (click)="sortTableByBranch('approved')">{{ 'APPROVED' | translate }}
+              <i *ngIf="statusSort === false; else descSort" class="mdi mdi-sort-ascending pull-right"></i>
+              <ng-template #descSort>
+                <i class="mdi mdi-sort-descending pull-right"></i>
+              </ng-template>
+            </th>
+            <th class="cursor" (click)="sortTableByBranch('status')">
+              {{ 'STATUS' | translate }}
+              <i *ngIf="statusSort === false; else descSort" class="mdi mdi-sort-ascending pull-right"></i>
+              <ng-template #descSort>
+                <i class="mdi mdi-sort-descending pull-right"></i>
+              </ng-template>
+            </th>
+          </tr>
+        </thead>
+
+        <tbody *ngIf="productDisplay && productDisplay.length > 0; else tableNoData" infinite-scroll
+          [infiniteScrollDistance]="scrollDistance" [infiniteScrollUpDistance]="scrollUpDistance"
+          [infiniteScrollThrottle]="throttle" (scrolled)="onScrollDown()">
+          <tr *ngFor="let product of productDisplay; let i = index">
+            <td>
+              <mat-checkbox color="warn" checked="false" [(ngModel)]="values[product.id]" [checked]="selectedAll"
+                (change)="onValueSelectionChange($event, product.id)"></mat-checkbox>
+            </td>
+            <td>{{i+1}}</td>
+            <td>
+              <a class="text-info font-weight-bold" style="font-size: 15px" [routerLink]="['/product/detail/', product.id]">
+                #{{product.sku}}
+              </a>
+            </td>
+            <td>{{ product.title }}</td>
+            <td>
+              <a class="text-info font-weight-bold" style="font-size: 15px" [routerLink]="['/product/detail/', product.id]">
+                <img class="product_list_images" src="{{ product.images[0] }}" onError="this.src='assets/images/profile.jpg'">
+              </a>
+            </td>
+            <td>{{ product.quantity }}</td>
+            <td>{{formatPrice(product.price)}}</td>
+            <td [ngSwitch]="product.is_special">
+              <label class="badge badge-gradient-info" *ngSwitchCase="'0'">Normal</label>
+              <label class="badge badge-gradient-primary" *ngSwitchCase="'1'">Voucher</label>
+              <label class="badge badge-gradient-warning" *ngSwitchCase="'2'">Ticket</label>
+            </td>
+            <td>
+              <label class="badge badge-gradient-danger" *ngIf="product.approved == 0; else notApproved">{{ 'UNAPPROVED' | translate }}</label>
+              <ng-template #notApproved>
+                <label class="badge badge-gradient-success" *ngIf="product.approved">{{ 'APPROVED' | translate }}</label>
+              </ng-template>
+            </td>
+            <td>
+              <div *ngIf="product.status == '0'; else other_status" class="badge badge-gradient-danger">{{ 'CLOSE' | translate }}</div>
+              <ng-template #other_status>
+                <div class="badge badge-gradient-success">{{ 'ON' | translate }}</div>
+              </ng-template>
+            </td>
+          </tr>
+        </tbody>
+        <ng-template #tableNoData>
+          <tr>
+            <td colspan="10">
+              <h4>{{ 'NO DATA' | translate }}</h4>
+            </td>
+          </tr>
+        </ng-template>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div id="filterModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myModalLabel">{{ 'FILTER' | translate }}</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <div class="card-box">
+            <div class="form-group m-b-0">
+              <label>{{ 'APPROVED' | translate }}</label>
+              <ng-select *ngIf="statusApproval" [items]="statusApproval" bindLabel="title" bindValue="id" [clearable]="false"
+                [(ngModel)]="approved">
+              </ng-select>
+            </div>
+            <div class="form-group m-b-0">
+              <label>{{ 'STATUS' | translate }}</label>
+              <ng-select *ngIf="statusProduct" [items]="statusProduct" bindLabel="title" bindValue="id" [clearable]="false"
+                [(ngModel)]="status">
+              </ng-select>
+            </div>
+            <div class="form-group m-b-0" *ngIf="customService.isAdmin">
+              <label>{{ 'CHOOSE SHOP' | translate }}</label>
+              <ng-select *ngIf="shops" [items]="shops" bindLabel="title" bindValue="id" [(ngModel)]="shop_id">
+              </ng-select>
+            </div>
+            <div class="form-group m-b-0">
+              <label>{{ 'TYPE PRODUCT' | translate }}</label>
+              <ng-select *ngIf="typeCategories" [items]="typeCategories" bindLabel="title" bindValue="id" [clearable]="false"
+                [(ngModel)]="type_product">
+              </ng-select>
+            </div>
+            <div class="form-group m-b-0">
+              <label>{{ 'CHOOSE CATEGORY' | translate }}</label>
+              <ng-select *ngIf="categories" [items]="categories" bindLabel="title" bindValue="id" [(ngModel)]="category_id">
+              </ng-select>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" (click)="filterFormProduct()" data-dismiss="modal" class="btn btn-outline-success">
+            {{ 'SEARCH' | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="importExcelModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myModalLabel">{{ 'IMPORT EXCEL' | translate }}</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <div class="card-box">
+            <div class="form-group" *ngIf="customService.isAdmin">
+              <label>{{ 'SHOP' | translate }}</label>
+              <select class="form-control" (ngModelChange)="selectShop($event)" [(ngModel)]="selectedShop">
+                <option *ngFor="let shop of shops" [ngValue]="shop">{{shop.title}}</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <button (click)="file_excel_product_default()" class="btn btn-danger waves-effect waves-light m-b-5 btn-block m-1">
+                <i class="mdi mdi-file-image m-r-5"></i>
+                <span>{{ 'FILE EXCEL DEFAULT' | translate }}</span>
+              </button>
+            </div>
+            <div class="card-box">
+              <label>{{ 'File Excel' | translate }}</label>
+              <br>
+              <input type="file" multiple (change)="detectFiles($event, 'excel')">
+            </div>
+            <div class="card-box">
+              <label>{{ 'File Image' | translate }}</label>
+              <br>
+              <input type="file" multiple (change)="detectFiles($event, 'image')">
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" (click)="excelProduct()" data-dismiss="modal" class="btn btn-outline-success">
+            {{ 'UPLOAD' | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

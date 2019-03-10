@@ -1,0 +1,170 @@
+<div class="row">
+    <div class="col-12">
+        <div class="card-box table-responsive">
+            <div class="page-header">
+                <h3 class="page-title">
+                    <span class="page-title-icon bg-gradient-info text-white mr-2">
+                        <i class="fa fa-bank"></i>
+                    </span>
+                    {{ 'SHOP' | translate }}
+                </h3>
+            </div>
+            <div class="col-xl-auto">
+                <!-- <h4 class="page-title">{{ 'SHOP' | translate }}</h4> -->
+                <a [routerLink]="['./add']" target="_self" class="btn btn-outline-info btn-fw pull-right m-1">
+                    <i class="fa fa-plus"></i> {{ 'ADD' | translate }}</a>
+                    <button type="button" class="btn btn-outline-primary btn-fw pull-right m-1" data-toggle="modal"
+                    data-target="#myModal"><i class="fa fa-filter"></i>
+                        {{ 'FILTER' | translate }}</button>
+                <!-- <button class="pull-right btn btn-warning waves-effect waves-light m-b-5 m-1" data-toggle="modal"
+                    data-target="#myModal"> 
+                    <i class="fa fa-filter"></i>
+                    {{ 'FILTER' | translate }}
+                </button> -->
+                <div *ngIf="selectedAll || selectedIdShop.length != 0">
+                    <button *ngIf="selectApproved == 1" class="pull-right btn btn-success waves-effect waves-light m-b-5 m-1"
+                        (click)="editApproval()"><i class="fa fa-check"></i> {{ 'ACTION' | translate }}</button>
+                </div>
+                <select *ngIf="selectedAll || selectedIdShop.length != 0" class="custom-select pull-right m-b-5 m-1"
+                    style="width: auto;" (change)="selectApprove($event.target.value)" [(ngModel)]="selectApproved">
+                    <option [value]="0">--Chọn lệnh thực thi--</option>
+                    <option *ngIf="customService.isApprovalShop" [value]="1">{{ 'APPROVED SHOP' | translate }}</option>
+                </select>
+            </div>
+
+            <div class="clearfix"></div>
+
+            <input [(ngModel)]="keywordShop" (keyup)="searchShopByKeyWord()" placeholder="{{ 'SEARCH' | translate }}"
+                type="text" class="form-control pull-right m-2 w-25 btn-rounded">
+            <table class="table table-bordered text-center">
+                <thead>
+                    <tr>
+                        <th>
+                            <div class="form-md-checkboxes">
+                                <mat-checkbox color="warn" [(ngModel)]="selectedAll" (change)="selectAllShop()"></mat-checkbox>
+                            </div>
+                        </th>
+                        <th>#</th>
+                        <th class="cursor" (click)="sortTableByBranch('title')">{{ 'TITLE SHOP' | translate }}
+                            <i *ngIf="statusSort === false; else descSort" class="mdi mdi-sort-ascending pull-right"></i>
+                            <ng-template #descSort>
+                                <i class="mdi mdi-sort-descending pull-right"></i>
+                            </ng-template>
+                        </th>
+                        <th class="cursor" (click)="sortTableByBranch('owner_name')">{{ 'OWNER NAME' | translate }}
+                            <i *ngIf="statusSort === false; else descSort" class="mdi mdi-sort-ascending pull-right"></i>
+                            <ng-template #descSort>
+                                <i class="mdi mdi-sort-descending pull-right"></i>
+                            </ng-template>
+                        </th>
+                        <th class="cursor" (click)="sortTableByNumber('owner_phone')">{{ 'OWNER PHONE' | translate }}
+                            <i *ngIf="statusSort === false; else descSort" class="mdi mdi-sort-ascending pull-right"></i>
+                            <ng-template #descSort>
+                                <i class="mdi mdi-sort-descending pull-right"></i>
+                            </ng-template>
+                        </th>
+                        <th class="cursor" (click)="sortTableByBranch('time_created')">{{ 'TIME CREATED' | translate }}
+                            <i *ngIf="statusSort === false; else descSort" class="mdi mdi-sort-ascending pull-right"></i>
+                            <ng-template #descSort>
+                                <i class="mdi mdi-sort-descending pull-right"></i>
+                            </ng-template>
+                        </th>
+                        <th class="cursor" (click)="sortTableByBranch('approved')">{{ 'APPROVED SHOP' | translate }}
+                            <i *ngIf="statusSort === false; else descSort" class="mdi mdi-sort-ascending pull-right"></i>
+                            <ng-template #descSort>
+                                <i class="mdi mdi-sort-descending pull-right"></i>
+                            </ng-template>
+                        </th>
+                        <th class="cursor" (click)="sortTableByBranch('status')">{{ 'STATUS' | translate }}
+                            <i *ngIf="statusSort === false; else descSort" class="mdi mdi-sort-ascending pull-right"></i>
+                            <ng-template #descSort>
+                                <i class="mdi mdi-sort-descending pull-right"></i>
+                            </ng-template>
+                        </th>
+                    </tr>
+                </thead>
+
+                <tbody *ngIf="shopDisplay && shopDisplay.length > 0; else tableNoData" infinite-scroll
+                    [infiniteScrollDistance]="scrollDistance" [infiniteScrollUpDistance]="scrollUpDistance"
+                    [infiniteScrollThrottle]="throttle" (scrolled)="onScrollDown()">
+                    <tr *ngFor="let shop of shopDisplay; let i = index">
+                        <td>
+                            <div class="form-group form-md-checkboxes">
+                                <!-- <input name="values[]" type="checkbox" (change)="onValueSelectionChange($event, shop.id)"> -->
+                                <mat-checkbox color="warn" name="values[]" [(checked)]="selectedAll" (change)="onValueSelectionChange($event, shop.id)"></mat-checkbox>
+                            </div>
+                        </td>
+                        <td>{{ i + 1}}</td>
+                        <td><a [routerLink]="['/shop', shop.id]">{{shop.title}}</a></td>
+
+                        <td>{{shop.owner_name}}</td>
+                        <td>{{shop.owner_phone}}</td>
+                        <td>{{shop.time_created * 1000 | date:'dd-MM-yyyy H:mm:ss'}}</td>
+                        <td>
+                            <label class="badge badge-gradient-danger" *ngIf="shop.approved == 0; else notApproved">
+                                {{ 'UNAPPROVED' | translate }}
+                            </label>
+                            <ng-template #notApproved>
+                                <label class="badge badge-gradient-success" *ngIf="shop.approved">
+                                    {{ 'APPROVED' | translate }}
+                                </label>
+                            </ng-template>
+                        </td>
+                        <td>
+                            <label class="badge badge-gradient-danger" *ngIf="shop.status == 0; else notStatus">{{ 'OFF' | translate }}</label>
+                            <ng-template #notStatus><label class="badge badge-gradient-success" *ngIf="shop.status">{{ 'ON' |
+                                    translate }}</label></ng-template>
+                        </td>
+                    </tr>
+                </tbody>
+                <ng-template #tableNoData>
+                    <tr>
+                        <td colspan="8">
+                            <h4>{{ 'NO DATA' | translate }}</h4>
+                        </td>
+                    </tr>
+                </ng-template>
+            </table>
+        </div>
+    </div>
+    <div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">{{ 'FILTER' | translate }}</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <div class="card-box">
+                            <div class="form-group m-b-0">
+                                <label>{{ 'STATUS' | translate }}</label>
+                                <select class="form-control" (change)="onSelectStatus($event.target.value)" [(ngModel)]="status">
+                                    <option value="-1">{{ 'ALL' | translate }}</option>
+                                    <option value="0">{{ 'OFF' | translate }}</option>
+                                    <option value="1">{{ 'ON' | translate }}</option>
+                                </select>
+                            </div>
+                            <div class="form-group m-b-0">
+                                <label>{{ 'APPROVED' | translate }}</label>
+                                <select class="form-control" (change)="onSelectApproved($event.target.value)"
+                                    [(ngModel)]="approved">
+                                    <option value="-1">{{ 'ALL' | translate }}</option>
+                                    <option value="0">{{ 'UNAPPROVED' | translate }}</option>
+                                    <option value="1">{{ 'APPROVED' | translate }}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-danger btn-fw" data-dismiss="modal">{{ 'CLOSE' | translate }}</button>
+                        <button type="button" class="btn btn-outline-success btn-fw" (click)="filterSubmit()"
+                            data-dismiss="modal">{{ 'SAVE' | translate }}</button>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
+    </div>

@@ -1,0 +1,116 @@
+<div class="row">
+  <div class="col-lg-12">
+    <div class="card-box">
+
+      <div class="row">
+        <div class="card-box table-responsive">
+          <div class="col-xl-auto">
+            <h4 class="page-title">{{ 'FINANCE' | translate }}</h4>
+            <!-- <a [routerLink]="['./add']" target="_self" class="pull-right btn
+              btn-icon waves-effect btn-primary m-b-5 m-1"><i
+                class="fa fa-plus"></i> {{'ADD' | translate }} </a>
+            <button class="pull-right btn btn-warning waves-effect waves-light
+              m-b-5 m-1" data-toggle="modal"
+              data-target="#myModal"> <i class="fa fa-filter"></i>
+            </button> -->
+          </div>
+
+          <div class="clearfix"></div>
+
+          <div class="form-group row">
+            <div class="col-sm-4"></div>
+            <div class="col-sm-2">
+              <label>{{ 'START TIME' | translate }}</label>
+              <timepicker [(ngModel)]="startTimeSelect" [showMeridian]="false"></timepicker>
+            </div>
+            <div class="col-sm-2">
+              <label>{{ 'END TIME' | translate }}</label>
+              <timepicker [(ngModel)]="endTimeSelect" [showMeridian]="false"></timepicker>
+            </div>
+            <div class="col-sm-4"></div>
+          </div>
+          <div class="form-group row">
+              <div class="col-sm-4"></div>
+            <div class="col-sm-2">
+              <label>{{ 'START DAY' | translate }}</label>
+              <input [(ngModel)]="startDaySelect" type="text" placeholder="Chọn ngày bắt đầu" [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }"
+                bsDatepicker class="form-control" [readonly]=true>
+            </div>
+            <div class="col-sm-2">
+              <label>{{ 'END DAY' | translate }}</label>
+              <input [(ngModel)]="endDaySelect" type="text" placeholder="Chọn ngày kết thúc" [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }"
+                bsDatepicker class="form-control" [readonly]=true>
+            </div>
+            <div class="col-sm-4"></div>
+          </div>
+          <div class="p-20 form-group" *ngIf="customService.isAdmin">
+            <label>{{ 'CHOOSE SHOP' | translate }}</label>
+            <div class="input-group mb-3">
+              <select (change)="onShopChange($event.target.value)" class="custom-select w-25 m-b-5 m-1">
+                <!-- <option value=" ">{{ 'ALL' | translate }}</option> -->
+                <option *ngFor="let shop of shops" value="{{shop.id}}">{{shop.title}}</option>
+              </select>
+            </div>
+          </div>
+          <button class="btn btn-outline-success" (click)="submitChooseDay()"><i class="fa fa-check"></i> {{ 'SAVE' | translate }}</button>
+          <input [(ngModel)]="keywordFinances" (keyup)="searchFinanceByKeyWord()" placeholder="{{ 'SEARCH' | translate }}" type="text" class="form-control pull-right m-2 w-25 btn-rounded">
+          <table id="datatable" class="table table-bordered text-center">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th class="cursor" (click)="sortTableByNumber('title')">{{ 'TOTAL' | translate }}
+                    <i *ngIf="statusSort === false; else descSort" class="mdi mdi-sort-ascending pull-right"></i>
+                    <ng-template #descSort>
+                        <i class="mdi mdi-sort-descending pull-right"></i>
+                    </ng-template>
+                </th>
+                <th class="cursor" (click)="sortTableByNumber('time_created')">{{ 'DATE' | translate }}
+                    <i *ngIf="statusSort === false; else descSort" class="mdi mdi-sort-ascending pull-right"></i>
+                    <ng-template #descSort>
+                        <i class="mdi mdi-sort-descending pull-right"></i>
+                    </ng-template>
+                </th>
+                <th class="cursor" (click)="sortTableByNumber('subject_id')">{{ 'STATUS' | translate }}
+                    <i *ngIf="statusSort === false; else descSort" class="mdi mdi-sort-ascending pull-right"></i>
+                    <ng-template #descSort>
+                        <i class="mdi mdi-sort-descending pull-right"></i>
+                    </ng-template>
+                </th>
+              </tr>
+            </thead>
+
+            <tbody *ngIf="financesDisplay && financesDisplay.length > 0; else tableNoData">
+              <tr *ngFor="let finance of financesDisplay; let i = index">
+                <td>{{i + 1}}</td>
+                <td>{{formatTotal(finance.title)}}</td>
+                <td>{{finance.time_created * 1000 | date:'dd-MM-yyyy H:mm:ss'}}</td>
+                <td>
+                  <a *ngIf="finance.status == 18" [routerLink]="['/order', finance.subject_id]">
+                    {{convertStatus(finance.status, finance.subject_id)}}
+                  </a>
+                  <a *ngIf="finance.status == 20 || finance.status == 21" [routerLink]="['/advertise', finance.subject_id]">
+                    {{convertStatus(finance.status, finance.subject_id)}}
+                  </a>
+                  <a *ngIf="finance.status == 22" [routerLink]="['/delivery', finance.subject_id]">
+                    {{convertStatus(finance.status, finance.subject_id)}}
+                  </a>
+                </td>
+              </tr>
+
+            </tbody>
+          </table>
+          <ng-template #tableNoData>
+            <tr>
+              <td colspan="8">
+                <h4>{{ 'NO DATA' | translate }}</h4>
+              </td>
+            </tr>
+          </ng-template>
+        </div>
+      </div>
+      <!-- end row -->
+
+    </div>
+  </div>
+  <!-- end col -->
+</div>

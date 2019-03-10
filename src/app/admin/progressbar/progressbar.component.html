@@ -1,0 +1,38 @@
+<div class="row">
+  <div class="col-lg-12">
+    <div class="card-box">
+      <div class="col-xs-12">
+        <button (click)="backPage()" class="btn btn-info waves-effect waves-light m-b-5 pull-left m-1">
+          <i class="fa fa-arrow-left m-r-5"></i>
+          <span>{{ 'Chuyển về' | translate }}</span>
+        </button>
+        <button (click)="updateProgressbar()" class="btn btn-danger waves-effect waves-light m-b-5 pull-right m-1">
+          <i class="fa fa-remove m-r-5"></i>
+          <span>{{ 'Hủy' | translate }}</span>
+        </button>
+      </div>
+      <div class="clearfix"></div>
+      <div class="progress progress-lg" style="height: 40px !important;">
+        <div class="progress-bar progress-bar-warning progress-bar-striped active" role="progressbar" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100" [ngStyle]="{'width': percent}">
+          {{percent}}
+        </div>
+      </div>
+      <table class="table table-bordered text-center">
+        <thead>
+          <tr>
+            <th>Thêm mới ({{number_inserted}}) </th>
+            <th>Chỉnh sửa ({{number_updated}})</th>
+            <th>Lỗi ({{number_error}})</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let progressbar of list_progressbar">
+            <td>{{progressbar[0]}}</td>
+            <td>{{progressbar[1]}}</td>
+            <td>{{progressbar[2]}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

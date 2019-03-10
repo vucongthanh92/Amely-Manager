@@ -1,0 +1,35 @@
+<div *ngIf="is_error" class="wrapper-page">
+  <div class="ex-page-content text-center">
+    <div class="text-error" style="color:red">404</div>
+    <h3 class="text-uppercase font-600">Thanh toán thất bại!</h3>
+    <p class="text-muted">
+      It's looking like you may have taken a wrong turn. Don't worry... it happens to the best of us. You might want to check your
+      internet connection. Here's a little tip that might help you get back on track.
+    </p>
+    <br>
+  </div>
+</div>
+
+<div *ngIf="is_success" class="wrapper-page">
+  <div class="ex-page-content text-center">
+    <div class="text-error">200</div>
+    <h3 class="text-uppercase font-600">Thanh toán thành công!</h3>
+    <p class="text-muted">
+      It's looking like you may have taken a wrong turn. Don't worry... it happens to the best of us. You might want to check your
+      internet connection. Here's a little tip that might help you get back on track.
+    </p>
+    <br>
+  </div>
+</div>
+
+<div *ngIf="!is_error && !is_success" class="wrapper-page">
+  <div class="ex-page-content text-center">
+    <div class="text-error">404</div>
+    <h3 class="text-uppercase font-600">Page not Foundsadasdasdsadasdd</h3>
+    <p class="text-muted">
+      It's looking like you may have taken a wrong turn. Don't worry... it happens to the best of us. You might want to check your
+      internet connection. Here's a little tip that might help you get back on track.
+    </p>
+    <br>
+  </div>
+</div>

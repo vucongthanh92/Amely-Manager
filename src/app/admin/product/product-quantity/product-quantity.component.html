@@ -1,0 +1,136 @@
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card-box">
+                <div class="page-header">
+                        <h3 class="page-title">
+                            <span class="page-title-icon bg-gradient-info text-white mr-2">
+                                <i class="fa fa-product-hunt"></i>
+                            </span>
+                            {{ 'PRODUCT QUANTITY' | translate }}
+                        </h3>
+                    </div>
+            <div class="col-xl-auto">
+                <a data-toggle="modal" data-target="#modalExcel" target="_self" class="pull-right btn btn-outline-success"><i class="mdi mdi-file-excel"></i> {{ 'IMPORT EXCEL' | translate }}</a>
+            </div>
+            <div class="clearfix"></div>
+            <div class="row">
+                <div class="col-md-12">
+
+                    <div class="p-20 form-group" *ngIf="customService.isAdmin">
+                        <label>{{ 'CHOOSE SHOP' | translate }}</label>
+                        <div class="input-group mb-3">
+                            <select (ngModelChange)="onShopChange($event)" [(ngModel)]="shop" class="custom-select m-b-5 m-1" name="" id="">
+                              <option *ngFor="let shop of shops" [ngValue]="shop">{{shop.title}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="p-20 row">
+                            <div class="col-md">
+                                <table id="datatable" class="table table-bordered text-center">
+                                    <thead>
+                                        <tr>
+                                            <th *ngIf="stores"></th>
+                                            <th *ngFor="let store of stores">{{store.title}}</th>
+                                        </tr>
+                                    </thead>
+                    
+                                    <tbody infinite-scroll [infiniteScrollDistance]="scrollDistance" [infiniteScrollUpDistance]="scrollUpDistance" [infiniteScrollThrottle]="throttle"
+                                    (scrolled)="onScrollDown()">
+                                        <tr *ngFor="let product of products">
+                                            <td>{{product.title}} ({{product.sku}})</td>
+                                            <td *ngFor="let store of stores" class="test">
+                                                <a (click)="selectQuantity(store, product)" style="display: block; width: 100%;" data-toggle="modal" data-target="#myModal">
+                                                    {{getQuantityStoreProduct(store.id, product.id)}}
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+          
+            <!-- end row -->
+        </div>
+
+    </div>
+    <!-- end col -->
+
+    <!-- end col -->
+</div>
+<div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">{{ 'UPDATE QUANTITY' | translate }}</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <div class="card-box">
+                        <div class="form-group m-b-0">
+                            <label>{{ 'TITLE SHOP' | translate }}</label> : 
+                            <label>{{ titleStore }}</label>
+                        </div>
+                        <div class="form-group m-b-0">
+                            <label>{{ 'TITLE PRODUCT' | translate }}</label> : 
+                            <label>{{ titleProduct }} ({{sku}})</label>
+                        </div>
+                       
+                        <div class="form-group m-b-0">
+                            <label>{{ 'QUANTITY' | translate }}</label>
+                            <!-- <input type="number" placeholder="" [(ngModel)]="onValueModal" class="form-control"> -->
+                            <input type="text" [(ngModel)]="onValueModal" [pattern]="customService.numberPattern" #numberPattern="ngModel" class="form-control">
+                            <p style="color: red" *ngIf="numberPattern.errors?.pattern"> 
+                                {{ 'QUANTITYPATTERN' | translate }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-danger btn-fw" data-dismiss="modal">{{ 'CLOSE' | translate }}</button>
+                        <button *ngIf="!numberPattern.errors?.pattern" type="button" class="btn btn-outline-success btn-fw" (click)="updateQuantity()" data-dismiss="modal">{{ 'SAVE' | translate }}</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+</div>
+<div id="modalExcel" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">{{ 'IMPORT EXCEL' | translate }}</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <div class="card-box">
+                        <div class="form-group">
+                            <button (click)="file_quantity_default()" class="btn btn-danger waves-effect waves-light m-b-5 btn-block m-1">
+                                <i class="mdi mdi-file-image m-r-5"></i>
+                                <span>{{ 'FILE EXCEL DEFAULT' | translate }}</span>
+                            </button>
+                        </div>
+                        <div class="form-group m-b-0">
+                            <label>{{ 'EXCEL' | translate }}</label>
+                            <input type="file" class="form-control" (change)="detectFiles($event, 'excel')">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-danger btn-fw" data-dismiss="modal">{{ 'CLOSE' | translate }}</button>
+                        <button type="button" class="btn btn-outline-success btn-fw" (click)="excelProduct()" data-dismiss="modal">{{ 'SAVE' | translate }}</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+</div>

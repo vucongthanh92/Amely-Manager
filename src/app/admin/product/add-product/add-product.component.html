@@ -1,0 +1,236 @@
+<div class="row">
+    <div class="col-lg-8 product_content">
+        <div class="card-box">
+                <div class="page-header">
+                        <h3 class="page-title">
+                            <span class="page-title-icon bg-gradient-info text-white mr-2">
+                                <i class="fa fa-product-hunt"></i>
+                            </span>
+                            {{ 'ADD PRODUCT' | translate }}
+                        </h3>
+                    </div>
+                    <button (click)="createProduct()" [ladda]="isLoading" type="button" class="btn btn-outline-success btn-fw m-b-5 pull-right">
+                        <i class="fa fa-check"></i> {{ 'SAVE' | translate }}
+                    </button>
+                    <div class="clearfix"></div>
+            <div class="row">
+
+                <div class="col-md-6">
+                    <div class="p-20">
+                        <div class="form-group">
+                            <label>{{ 'SKU' | translate }}</label>
+                            <input [(ngModel)]="product.sku" type="text" class="form-control">
+                        </div>
+
+                        <div class="form-group">
+                            <label>{{ 'TITLE PRODUCT' | translate }}</label>
+                            <input [(ngModel)]="product.title" (change)="convertToFriendlyURL(product.title)" type="text" class="form-control">
+                        </div>
+
+                        <div *ngIf="shops && customService.isAdmin" class="form-group">
+                            <label>{{ 'CHOOSE SHOP' | translate }}</label>
+                            <ng-select (change)="changeShopToCategory()" [items]="shops" bindLabel="title" bindValue="id" [clearable]="false"
+                                [(ngModel)]="product.owner_id">
+                            </ng-select>
+                        </div>
+
+                        <div class="form-group m-b-0">
+                            <label>{{ 'STORE CATALOG' | translate }}</label>
+                            <ng-select
+                                [items]="shopCategories"
+                                bindLabel="title"
+                                [multiple]="true"
+                                [(ngModel)]="itemsShop">
+                            </ng-select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>{{ 'PRICE' | translate }}</label>
+                            <input [(ngModel)]="product.price" type="number" min="0" class="form-control" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>{{ 'STORAGE' | translate }}</label>
+                            <input [(ngModel)]="product.storage_duration" type="number" min="1" class="form-control">
+                        </div>
+
+                        <div class="form-group">
+                            <label>{{ 'Storage Price' | translate }}</label>
+                            <input [(ngModel)]="product.adjourn_price" type="number" min="0" class="form-control" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>{{ 'UNIT' | translate }}</label>
+                            <input [(ngModel)]="product.unit" type="text" class="form-control">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="p-20">
+                        <div class="form-group">
+                            <label>{{ 'URL' | translate }}</label>
+                            <input [(ngModel)]="product.friendly_url" (change)='convertToFriendlyURL(product.friendly_url)' type="text" class="form-control">
+                        </div>
+
+                        <div class="form-group">
+                            <label>{{ 'TAX' | translate }}</label>
+                            <input [(ngModel)]="product.tax" type="number" min="0" class="form-control" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>{{ 'MANUFACTURE' | translate }}</label>
+                            <input [(ngModel)]="product.manufacturer" type="text" class="form-control">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>{{ 'ORIGIN' | translate }}</label>
+                            <input [(ngModel)]="product.origin" type="text" class="form-control">
+                        </div>
+
+                        <div class="form-group">
+                            <label>{{ 'WEIGHT' | translate }}</label>
+                            <div class="input-group">
+                                <input [(ngModel)]="product.weight" type="number" min="0" class="form-control">
+                                <div class="input-group-append">
+                                    <span class="input-group-text">KG</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>{{ 'INDUSTRY GROUP' | translate }}</label>
+                            <ng-select [items]="productGroup" bindLabel="title" bindValue="id" [clearable]="false"
+                                [(ngModel)]="product.product_group">
+                            </ng-select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>{{ 'STATUS' | translate }}</label>
+                            <ng-select [items]="statusProduct" bindLabel="title" bindValue="id" [clearable]="false"
+                                [(ngModel)]="product.status">
+                            </ng-select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>{{ 'TYPE EXPIRE' | translate }}</label>
+                            <ng-select [items]="expiryTypeProduct" bindLabel="title" bindValue="id" [clearable]="false"
+                                [(ngModel)]="product.expiry_type">
+                            </ng-select>
+                        </div>
+
+                        <div *ngIf="product.expiry_type == '1'" class="form-group">
+                            <label>{{ 'USED TIME' | translate }}</label>
+                            <input [(ngModel)]="product.duration" type="number" min="1" class="form-control">
+                        </div>
+
+                        <div *ngIf="product.expiry_type == '2'" class="form-group row">
+                            <div class="col-6">
+                                <label class="col-12">{{ 'START' | translate }}</label>
+                                <input type="text" [(ngModel)]="beginDay" class="form-control"
+                                    [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' }" bsDatepicker>
+                            </div>
+                            <div class="col-6">
+                                <label class="col-12">{{ 'END' | translate }}</label>
+                                <input type="text" [(ngModel)]="endDay" class="form-control"
+                                    [bsConfig]="{ dateInputFormat: 'DD-MM-YYYY' }" bsDatepicker>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <div class="card-box">
+                        <label>{{ 'SPECIAL' | translate }}</label>
+                        <ul class="nav nav-tabs nav-justified">
+                            <li (click)="changeSpecial('0')" class="nav-item">
+                                <a href="#market" data-toggle="tab" aria-expanded="false" class="nav-link active">
+                                    {{ 'Market' | translate }}
+                                </a>
+                            </li>
+                            <li (click)="changeSpecial('1')" class="nav-item">
+                                <a href="#voucher" data-toggle="tab" aria-expanded="true" class="nav-link">
+                                    {{ 'VOUCHER' | translate }}
+                                </a>
+                            </li>
+                            <li (click)="changeSpecial('2')" class="nav-item">
+                                <a href="#ticket" data-toggle="tab" aria-expanded="false" class="nav-link">
+                                    {{ 'TICKET' | translate }}
+                                </a>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content">
+                            <div role="tabpanel" class="tab-pane fade show active" id="market">
+                                <label>{{ 'MARKET CATALOG' | translate }}</label>
+                                <ng-select
+                                    [items]="marketCategories"
+                                    bindLabel="title"
+                                    [multiple]="true"
+                                    [(ngModel)]="itemsMarket">
+                                </ng-select>
+                            </div>
+                            <div role="tabpanel" class="tab-pane fade" id="voucher">
+                                <label>{{ 'VOUCHER CATALOG' | translate }}</label>
+                                <ng-select *ngIf="voucherCategories" [items]="voucherCategories" bindLabel="title" bindValue="id" 
+                                    [(ngModel)]="product.voucher_category">
+                                </ng-select>
+                            </div>
+                            <div role="tabpanel" class="tab-pane fade" id="ticket">
+                                <label>{{ 'TICKET CATALOG' | translate }}</label>
+                                <ng-select *ngIf="ticketCategories" [items]="ticketCategories" bindLabel="title" bindValue="id" 
+                                    [(ngModel)]="product.ticket_category">
+                                </ng-select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-box">
+                        <label>{{ 'CONTENT' | translate }}</label>
+                        <editor [(ngModel)]="product.description"></editor>
+                    </div>
+
+                    <div class="card-box">
+                        <label>{{ 'TAG' | translate }}</label>
+                        <tag-input [(ngModel)]='tags' [maxItems]='5'></tag-input>
+                    </div>
+
+                    <div class="card-box">
+                        <label>{{ 'IMAGE' | translate }}</label>
+                        <form [formGroup]="uploadImageForm" #uploadDocumentsForm="ngForm" ngNativeValidate>
+                            <div class="box box-solid box-primary">
+                                <div class="row" formArrayName="items">
+                                    <div *ngFor="let item of items.controls; let i = index;" [ngClass]="{'col-md-12': i == 0, 'col-md-3': i != 0}">
+                                        <div [formGroupName]="i">
+                                            <div *ngIf="i != 0 else uploadImages">
+                                                <div class="product_image">
+                                                    <img [src]="fileImages[i - 1].url" onError="this.src='assets/images/profile.jpg'" class="rounded mb-3">
+                                                    <a title="Remove" (click)="removeItem(i)" class="mdi mdi-close-circle product_image_close"></a>
+                                                </div>
+                                            </div>
+                                            <ng-template #uploadImages>
+                                                <div>
+                                                    <div class="form-group required">
+                                                        <input type="file" title="Browse Document {{ i }}" (change)="fileSelectionEvent($event,i)">
+                                                        <div class="help-block"></div>
+                                                    </div>
+                                                </div>
+                                            </ng-template>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

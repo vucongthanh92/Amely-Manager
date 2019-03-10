@@ -1,0 +1,125 @@
+<div class="row">
+    <div class="col-12">
+        <div class="card-box table-responsive">
+            <div class="row">
+                <h3 class="col-5 m-0 p-20">{{ 'USER' | translate }}</h3>
+                <div class="col-7 text-right p-20">
+                    <button [routerLink]="['/admin/user/add']" class="btn btn-outline-info m-b-5 pull-right m-1">
+                        <i class="fa fa-plus m-r-5"></i>
+                        <span>{{ 'ADD USER' | translate }}</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="clearfix"></div>
+            <input [(ngModel)]="keywordUsers" (keyup)="searchUserByKeyWord()" placeholder="{{ 'SEARCH' | translate }}" type="text" class="form-control pull-right m-2 w-25 btn-rounded">
+            <table id="datatable" class="table table-bordered text-center">
+                <thead>
+                    <tr>
+                        <th class="cursor" (click)="sortTableByNumber('id')">{{ 'ID' | translate }}
+                            <i *ngIf="statusSort === false; else descSort" class="mdi mdi-sort-ascending pull-right"></i>
+                            <ng-template #descSort>
+                                <i class="mdi mdi-sort-descending pull-right"></i>
+                            </ng-template>
+                        </th>
+                        <th class="cursor" (click)="sortTableByBranch('username')">{{ 'USER NAME' | translate }}
+                                <i *ngIf="statusSort === false; else descSort" class="mdi mdi-sort-ascending pull-right"></i>
+                                <ng-template #descSort>
+                                    <i class="mdi mdi-sort-descending pull-right"></i>
+                                </ng-template>
+                            </th>
+                        <th>{{ 'IMAGE' | translate }}</th>
+                        <th class="cursor" (click)="sortTableByBranch('fullname')">{{ 'OWNER NAME' | translate }}
+                                <i *ngIf="statusSort === false; else descSort" class="mdi mdi-sort-ascending pull-right"></i>
+                                <ng-template #descSort>
+                                    <i class="mdi mdi-sort-descending pull-right"></i>
+                                </ng-template>
+                            </th>
+                        <th class="cursor" (click)="sortTableByBranch('type')">{{ 'TYPE' | translate }}
+                                <i *ngIf="statusSort === false; else descSort" class="mdi mdi-sort-ascending pull-right"></i>
+                                <ng-template #descSort>
+                                    <i class="mdi mdi-sort-descending pull-right"></i>
+                                </ng-template>
+                            </th>
+                        <th class="cursor" (click)="sortTableByBranch('rule_id')">{{ 'PERMISSION' | translate }}
+                                <i *ngIf="statusSort === false; else descSort" class="mdi mdi-sort-ascending pull-right"></i>
+                                <ng-template #descSort>
+                                    <i class="mdi mdi-sort-descending pull-right"></i>
+                                </ng-template>
+                            </th>
+                        <th>{{ 'ACTION' | translate }}</th>
+                    </tr>
+                </thead>
+
+                <tbody *ngIf="usersDisplay && usersDisplay.length > 0; else tableNoData" infinite-scroll [infiniteScrollDistance]="scrollDistance"
+                        [infiniteScrollUpDistance]="scrollUpDistance" [infiniteScrollThrottle]="throttle" (scrolled)="onScrollDown()">
+                    <tr *ngFor="let user of usersDisplay">
+                        <td>{{user.id}}</td>
+                        <td>
+                            <a class="text-info" [routerLink]="['/admin/user', user.username]">
+                                {{user.username}}
+                            </a>
+                        </td>
+                        <td>
+                            <img class="category_list_images" src="{{user.avatar}}">
+                        </td>
+                        <td>{{user.fullname}}</td>
+                        <td>{{user.type | uppercase }}</td>
+                        <td>
+                            <div *ngIf="user.rule_id === '0'">Normal</div>
+                            <div *ngIf="user.rule_id === '1'; else getRuleByUser">Admin</div>
+                            <ng-template #getRuleByUser>
+                                <div *ngFor="let rule of rules">
+                                    <div *ngIf="rule.id === user.rule_id">{{ rule.title }}</div>
+                                </div>
+                            </ng-template>
+                        </td>
+                        <td>
+                            <button (click)="chooseUserShowPermission(user.id, user.rule_id, user.type)" data-toggle="modal" data-target="#changePermission" 
+                                class="btn btn-outline-success m-b-5" type="button">
+                                {{ 'PERMISSION' | translate }}
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+                <ng-template #tableNoData>
+                        <tr>
+                            <td colspan="8">
+                                <h4>{{ 'NO DATA' | translate }}</h4>
+                            </td>
+                        </tr>
+                    </ng-template>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div id="changePermission" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel">{{ 'PERMISSION' | translate }}</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <div class="card-box">
+                        <div class="form-group">
+                            <label>{{ 'TYPE USER' | translate }}</label>
+                            <ng-select [items]="listTypeUsers" bindLabel="title" bindValue="id" [(ngModel)]="userType"></ng-select>
+                        </div>
+                        <div class="form-group">
+                            <label>{{ 'RULE USER' | translate }}</label>
+                            <ng-select [items]="rules" bindLabel="title" bindValue="id" [(ngModel)]="ruleId"></ng-select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" (click)="editPermissionToUser()" data-dismiss="modal" class="btn btn-outline-success">
+                        {{ 'UPDATE' | translate }}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

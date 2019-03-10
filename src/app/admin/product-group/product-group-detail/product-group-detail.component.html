@@ -1,0 +1,92 @@
+<div class="row">
+  <div class="col-lg-12">
+      <div class="card-box">
+            <div class="page-header">
+                    <h3 class="page-title">
+                        <span class="page-title-icon bg-gradient-info text-white mr-2">
+                            <i class="mdi mdi-format-list-bulleted"></i>
+                        </span>
+                        {{ 'PRODUCT GROUP DETAIL' | translate }}
+                    </h3>
+                </div>
+                <div class="col-xl-auto">
+                        <button class="pull-right btn btn-outline-danger m-b-5 m-2" (click)="deletePG(productGroup.id)">
+                                <i class="fa fa-trash"></i> {{ 'DELETE' | translate }}
+                            </button>
+                    </div>
+         
+                  
+          <div class="clearfix"></div>
+          <div class="row">
+              <div class="col-lg-6" *ngIf="productGroup">
+                    <h4 class="header-title m-t-0 m-b-30">{{ 'PRODUCT GROUP' | translate }}</h4>
+                  <table class="table table-bordered table-striped">
+                      <tbody>
+                          <tr>
+                              <td width="25%" class="font-weight-bold">{{ 'TITLE PG' | translate }}</td>
+                              <td width="75%">{{ productGroup.title }}</td>
+                          </tr>
+                          <tr>
+                              <td width="25%" class="font-weight-bold">{{ 'PRICE' | translate }}</td>
+                              <td width="75%">{{ productGroup.price }}</td>
+                          </tr>
+                          <tr>
+                              <td width="25%" class="font-weight-bold">{{ 'PERCENT' | translate }}</td>
+                              <td width="75%">{{ productGroup.percent }}</td>
+                          </tr>
+                          <tr>
+                              <td width="25%" class="font-weight-bold">{{ 'TIME CREATED' | translate }}</td>
+                              <td width="75%">{{ productGroup.time_created * 1000 | date:'dd-MM-yyyy H:mm:ss'}}</td>
+                          </tr>
+                          <tr>
+                              <td width="25%" class="font-weight-bold">{{ 'CURRENCY' | translate }}</td>
+                              <td width="75%">{{ productGroup.currency }}</td>
+                          </tr>
+                          <!-- <tr>
+                              <td width="25%" class="font-weight-bold">{{ 'DESCRIPTION' | translate }}</td>
+                              <td width="75%">{{ productGroup.description }}</td>
+                          </tr> -->
+                      </tbody>
+                  </table>
+              </div>
+              <div class="col-lg-6" *ngIf="productGroup.owner">
+                  <h4 class="header-title m-t-0 m-b-30">{{ 'OWNER NAME' | translate }}</h4>
+                  <table class="table table-bordered table-striped">
+                      <tbody>
+                          <tr>
+                              <td width="25%" class="font-weight-bold">{{ 'NAME' | translate }}</td>
+                              <td width="75%">{{ productGroup.owner.fullname }}</td>
+                          </tr>
+                          <tr>
+                              <td width="25%" class="font-weight-bold">{{ 'GENDER' | translate }}</td>
+                              <td width="75%">
+                                    <span *ngIf="productGroup.owner.gender == 'male'; else female">
+                                        {{ 'MALE' | translate }}
+                                    </span>
+                                    <ng-template #female>{{ 'FEMALE' | translate }}</ng-template>
+                              </td>
+                          </tr>
+                          <tr>
+                              <td width="25%" class="font-weight-bold">{{ 'PHONE' | translate }}
+                              </td>
+                              <td width="75%">{{ productGroup.owner.mobilelogin }}</td>
+                          </tr>
+                          <tr>
+                              <td width="25%" class="font-weight-bold">{{ 'EMAIL' | translate }}</td>
+                              <td width="75%">{{ productGroup.owner.email }}</td>
+                          </tr>
+                      </tbody>
+                  </table>
+              </div>
+              <div class="col-lg-12">
+                <div class="card-box">
+                    <label>{{ 'DESCRIPTION' | translate }}</label>
+                    <div innerHTML="{{productGroup.description}}"></div>
+                </div>
+            </div>
+          </div>
+      </div>
+      <!-- end row -->
+  </div>
+</div>
+<!-- end col -->

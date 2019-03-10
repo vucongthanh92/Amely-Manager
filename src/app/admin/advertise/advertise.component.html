@@ -1,0 +1,174 @@
+<div class="row">
+        <div class="col-lg-12">
+                <div class="card-box table-responsive">
+                <div class="row">
+                    <div class="card-box table-responsive">
+                        <div class="col-xl-auto">
+                            <h4 class="page-title">{{ 'ADVERTISE' | translate }}</h4>
+                            <a [routerLink]="['./add']" target="_self" class="pull-right btn btn-outline-info m-b-5 m-1"><i
+                                    class="fa fa-plus"></i> {{ 'ADD ADVERTISE' | translate }}</a>
+                            <button class="pull-right btn btn-outline-primary btn-fw m-b-5 m-1" data-toggle="modal" data-target="#myModal">
+                                <i class="fa fa-filter"></i> {{ 'FILTER' | translate }}</button>
+                            <button *ngIf="selectApproved == 1" class="pull-right btn btn-success waves-effect waves-light m-b-5 m-1" (click)="editApproval()"><i class="fa fa-check"></i> {{ 'ACTION' | translate }}</button>
+                            <select class="custom-select pull-right m-b-5 m-1" style="width: auto;" (change)="selectApprove($event.target.value)" [(ngModel)]="selectApproved" *ngIf="isSelected && customService.isAdmin">
+                                <option [value]="0">--Chọn lệnh thực thi--</option>
+                                <option [value]="1">{{ 'APPROVED ADVERTISE' | translate }}</option>
+                            </select>
+                        </div>
+    
+                        <div class="clearfix"></div>
+                        <input [(ngModel)]="keywordAdvertise" (keyup)="searchAdvertiseByKeyWord()" placeholder="{{ 'SEARCH' | translate }}" type="text" class="form-control pull-right m-2 w-25 btn-rounded">
+                        <table id="datatable" class="table table-bordered text-center">
+                            <thead>
+                                <tr>
+                                    <th *ngIf="customService.isAdmin">
+                                        <div class="form-md-checkboxes">
+                                            <mat-checkbox color="warn" [(ngModel)]="selectedAll" (change)="selectAllAdvertise()"></mat-checkbox>
+                                        </div>
+                                    </th>
+                                    <th>#</th>
+                                    <th class="cursor" (click)="sortTableByNumber('id')">{{ 'CODE ADVERTISE' | translate }}
+                                        <i *ngIf="statusSort === false; else descSort" class="mdi mdi-sort-ascending pull-right"></i>
+                                        <ng-template #descSort>
+                                            <i class="mdi mdi-sort-descending pull-right"></i>
+                                        </ng-template>
+                                    </th>
+                                    <th class="cursor" (click)="sortTableByBranch('title')">{{ 'TITLE ADVERTISE' | translate }}
+                                        <i *ngIf="statusSort === false; else descSort" class="mdi mdi-sort-ascending pull-right"></i>
+                                        <ng-template #descSort>
+                                            <i class="mdi mdi-sort-descending pull-right"></i>
+                                        </ng-template>
+                                    </th>
+                                    <th class="cursor" (click)="sortTableByBranch('type')">{{ 'ADVERTISE TYPE' | translate }}
+                                        <i *ngIf="statusSort === false; else descSort" class="mdi mdi-sort-ascending pull-right"></i>
+                                        <ng-template #descSort>
+                                            <i class="mdi mdi-sort-descending pull-right"></i>
+                                        </ng-template>
+                                    </th>
+                                    <th class="cursor" (click)="sortTableByNumber('budget')">{{ 'BUDGET' | translate }}
+                                        <i *ngIf="statusSort === false; else descSort" class="mdi mdi-sort-ascending pull-right"></i>
+                                        <ng-template #descSort>
+                                            <i class="mdi mdi-sort-descending pull-right"></i>
+                                        </ng-template>
+                                    </th>
+                                    <th class="cursor" (click)="sortTableByNumber('cpc')">CPC
+                                        <i *ngIf="statusSort === false; else descSort" class="mdi mdi-sort-ascending pull-right"></i>
+                                        <ng-template #descSort>
+                                            <i class="mdi mdi-sort-descending pull-right"></i>
+                                        </ng-template>
+                                    </th>
+                                    <th class="cursor" (click)="sortTableByNumber('time_created')">{{ 'TIME CREATED' | translate }}
+                                        <i *ngIf="statusSort === false; else descSort" class="mdi mdi-sort-ascending pull-right"></i>
+                                        <ng-template #descSort>
+                                            <i class="mdi mdi-sort-descending pull-right"></i>
+                                        </ng-template>
+                                    </th>
+                                    <th class="cursor" (click)="sortTableByBranch('approved')">{{ 'APPROVED ADVERTISE' | translate }}
+                                        <i *ngIf="statusSort === false; else descSort" class="mdi mdi-sort-ascending pull-right"></i>
+                                        <ng-template #descSort>
+                                            <i class="mdi mdi-sort-descending pull-right"></i>
+                                        </ng-template>
+                                    </th>
+                                    <th class="cursor" (click)="sortTableByBranch('status')">{{ 'STATUS' | translate }}
+                                        <i *ngIf="statusSort === false; else descSort" class="mdi mdi-sort-ascending pull-right"></i>
+                                        <ng-template #descSort>
+                                            <i class="mdi mdi-sort-descending pull-right"></i>
+                                        </ng-template>
+                                    </th>
+                                </tr>
+                            </thead>
+    
+                            <tbody *ngIf="advertisesDisplay && advertisesDisplay.length > 0; else tableNoData" infinite-scroll [infiniteScrollDistance]="scrollDistance" [infiniteScrollUpDistance]="scrollUpDistance" [infiniteScrollThrottle]="throttle" (scrolled)="onScrollDown()">
+                                <tr *ngFor="let advertise of advertisesDisplay; let i = index">
+                                    <td *ngIf="customService.isAdmin">
+                                        <div class="form-group form-md-checkboxes">
+                                            <mat-checkbox color="warn" name="values[]" [(checked)]="selectedAll" (change)="onValueSelectionChange($event, advertise.id)"></mat-checkbox>
+                                        </div>
+                                    </td>
+                                    <td>{{i+1}}</td>
+                                    <td>
+                                        QC-{{ advertise.time_created }}-{{ advertise.id }}
+                                    </td>
+                                    <td>
+                                        <a class="text-info" [routerLink]="['/advertise', advertise.id ]">
+                                            {{ advertise.title }}
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <p *ngIf="advertise.advertise_type === '0'">{{ 'ADVERTISE PRODUCT' | translate }}</p>
+                                        <p *ngIf="advertise.advertise_type === '1'">{{ 'ADVERTISE SHOP' | translate }}</p>
+                                        <p *ngIf="advertise.advertise_type === '2'">{{ 'ADVERTISE BANNER' | translate }}</p>
+                                    </td>
+                                    <td>{{formatAmount(advertise.budget)}}</td>
+                                    <td>{{formatAmount(advertise.cpc)}}</td>
+                                    <td>{{ advertise.time_created * 1000 | date:'dd-MM-yyyy H:mm:ss'}}</td>
+                                    <td>
+                                        <label class="badge badge-gradient-danger" *ngIf="advertise.approved == 0; else notApproved">{{'UNAPPROVED' | translate }}</label>
+                                        <ng-template #notApproved>
+                                            <label class="badge badge-gradient-success" *ngIf="advertise.approved">{{ 'APPROVED' | translate }}</label>
+                                        </ng-template>
+                                    </td>
+                                    <td>
+                                        <label class="badge badge-gradient-danger" *ngIf="advertise.status == 0">{{ 'STOP' | translate }}</label>
+                                        <label class="badge badge-gradient-success" *ngIf="advertise.status == 1">{{ 'PLAY' | translate }}
+                                        </label>
+                                    </td>
+                                </tr>
+    
+                            </tbody>
+                            <ng-template #tableNoData>
+                                <tr>
+                                    <td colspan="9">
+                                        <h4>{{ 'NO DATA' | translate }}</h4>
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </table>
+                    </div>
+                </div>
+                <!-- end row -->
+            </div>
+        </div>
+        <!-- end col -->
+    </div>
+    
+    <div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">{{ 'FILTER' | translate }}</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <div class="card-box">
+                            <div class="form-group m-b-0">
+                                <label>{{ 'ADVERTISE TYPE' | translate }}</label>
+                                <select class="custom-select m-b-5 m-1" (change)="selectFillterType($event.target.value)" [(ngModel)]="selectedType">
+                                    <option [value]="-1">{{ 'ALL' | translate }}</option>
+                                    <option [value]="0">{{ 'PRODUCT' | translate }}</option>
+                                    <option [value]="1">{{ 'SHOP' | translate }}</option>
+                                    <option [value]="2">{{ 'BANNER' | translate }}</option>
+                                </select>
+                            </div>
+                            <div class="form-group m-b-0">
+                                <label>{{ 'APPROVED' | translate }}</label>
+                                <select class="form-control" (change)="selectFillterApproved($event.target.value)" [(ngModel)]="approved">
+                                    <option value="-1">{{ 'ALL' | translate }}</option>
+                                    <option value="0">{{ 'UNAPPROVED' | translate }}</option>
+                                    <option value="1">{{ 'APPROVED' | translate }}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-danger btn-fw" data-dismiss="modal">{{ 'CLOSE' | translate }}</button>
+                        <button type="button" class="btn btn-outline-success btn-fw" (click)="filterSubmit()" data-dismiss="modal">{{ 'SAVE' | translate }}</button>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+        <!-- /.modal -->
+    </div>

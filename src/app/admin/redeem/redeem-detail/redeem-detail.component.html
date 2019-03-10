@@ -1,0 +1,97 @@
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card-box">
+          <div *ngIf="redeem.item">
+            <a [routerLink]="['/order', redeem.item.so_id]" target="_self" class="pull-right btn btn-outline-info btn-fw m-b-5 m-2">
+              {{ 'ORDER' | translate }}
+            </a>
+          </div>
+            <div class="clearfix"></div>
+            <div class="row">
+                <div class="col-lg-4">
+                    <h4 class="header-title m-t-0 m-b-30">{{ 'REDEEM DETAIL' | translate }}</h4>
+                    <table class="table table-bordered table-striped">
+                        <tbody *ngIf="redeem.shop">
+                            <tr>
+                                <td width="25%" class="font-weight-bold">{{ 'CODE REDEEM' | translate }}</td>
+                                <td width="75%">
+                                    <div class="crop">
+                                        {{redeem.code}}
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="25%" class="font-weight-bold">{{ 'REDEEM DATE' | translate }}</td>
+                                <td width="75%">{{redeem.time_created * 1000 | date:'dd-MM-yyyy H:mm:ss'}}</td>
+                            </tr>
+                            <tr>
+                                <td width="25%" class="font-weight-bold">{{ 'QUANTITY' | translate }}</td>
+                                <td width="75%">{{redeem.quantity}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-lg-4">
+                    <h4 class="header-title m-t-0 m-b-30">{{ 'CUSTOMER DETAIL' | translate }}</h4>
+                    <table class="table table-bordered table-striped">
+                        <tbody *ngIf="redeem.customer">
+                            <tr>
+                                <td width="25%" class="font-weight-bold">{{ 'CUSTOMER NAME' | translate }}</td>
+                                <td width="75%">{{redeem.customer.fullname}}</td>
+                            </tr>
+                            <tr>
+                                <td width="25%" class="font-weight-bold">{{ 'CUSTOMER PHONE' | translate }}
+                                </td>
+                                <td width="75%">{{redeem.customer.mobilelogin}}</td>
+                            </tr>
+                            <tr>
+                                <td width="25%" class="font-weight-bold">{{ 'CUSTOMER ADDRESS' | translate }}</td>
+                                <td width="75%">{{redeem.customer.address}}</td>
+                            </tr>
+                            <tr>
+                                <td width="25%" class="font-weight-bold">{{ 'EMAIL' | translate }}</td>
+                                <td width="75%">{{redeem.customer.email}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-lg-4">
+                    <h4 class="header-title m-t-0 m-b-30">{{ 'SHOP DETAIL' | translate }}</h4>
+                    <table class="table table-bordered table-striped">
+                        <tbody *ngIf="redeem.customer">
+                            <tr>
+                                <td width="25%" class="font-weight-bold">{{ 'ID SHOP' | translate }}</td>
+                                <td width="75%">{{redeem.shop.id}}</td>
+                            </tr>
+                            <tr>
+                                <td width="25%" class="font-weight-bold">{{ 'TITLE SHOP' | translate }}</td>
+                                <td width="75%">{{redeem.shop.title}}</td>
+                            </tr>
+                            <tr>
+                                <td width="25%" class="font-weight-bold">{{ 'SKU' | translate }}</td>
+                                <td width="75%">{{redeem.item.snapshot.sku}}</td>
+                            </tr>
+                            <tr>
+                                <td width="25%" class="font-weight-bold">{{ 'TITLE PRODUCT' | translate }}</td>
+                                <td width="75%">{{redeem.item.snapshot.title}}</td>
+                            </tr>
+                            
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-lg-12">
+                    <div class="card-box">
+                        <label>{{ 'IMAGE' | translate }}</label>
+                        <div *ngIf="redeem.item" class="row">
+                            <div *ngFor="let image of redeem.item.snapshot.images" class="product_image">
+                                <img src="{{ image }}" onError="this.src='assets/images/profile.jpg'" class="rounded mb-3">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end row -->
+    </div>
+</div>
+<!-- end col -->

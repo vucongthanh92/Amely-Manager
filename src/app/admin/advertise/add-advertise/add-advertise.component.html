@@ -1,0 +1,104 @@
+<div class="row">
+    <div class="col-lg-12">
+            <div class="card-box table-responsive">
+
+            <h4 class="header-title m-t-0 m-b-30">{{ 'ADD ADVERTISE' | translate }}</h4>
+            <a (click)="addAdvertise()" [ladda]="isLoading" target="_self" class="pull-right btn btn-outline-success m-b-5 m-1"><i class="fa fa-check"></i> {{ 'SAVE' | translate }}</a>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="p-20">
+                        <div class="form-group" *ngIf="customService.isAdmin">
+                            <label>{{ 'SHOP' | translate }}</label>
+                            <select class="form-control" (change)="selectShop($event.target.value)" [(ngModel)]="selectedIDShop">
+                                <option *ngFor="let shop of shops" value="{{shop.id}}">{{shop.title}}</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>{{ 'ADVERTISE TYPE' | translate }}</label>
+                            <select class="form-control" (change)="selectType($event.target.value)" [(ngModel)]="selectedType">
+                                <option value="0">{{ 'AD_PRODUCT' | translate }}</option>
+                                <option value="1">{{ 'AD_SHOP' | translate }}</option>
+                                <option value="2">{{ 'AD_BANNER' | translate }}</option>
+                            </select>
+                        </div>
+                        <div class="form-group" *ngIf="selectedType == '0'">
+                            <label>{{ 'PRODUCT' | translate }}</label>
+                            <select class="form-control" (change)="selectProduct($event.target.value)" [(ngModel)]="selectedIDProduct">
+                                <option *ngFor="let product of products" value="{{product.id}}">{{product.title}}</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>{{ 'TITLE ADVERTISE' | translate }}</label>
+                            <input type="text" class="form-control" [(ngModel)]="title">
+                        </div>
+                        <div class="form-group" *ngIf="selectedType == '2'">
+                            <label>{{ 'LINK' | translate }}</label>
+                            <input type="text" class="form-control" [(ngModel)]="link">
+                        </div>
+                        <div class="form-group" *ngIf="selectedType == '2'">
+                            <input type="file" multiple (change)="detectFilesImage($event)">
+                            <div *ngIf="imageUrl" class="category_image">
+                                <img [src]="imageUrl" onError="this.src='assets/images/profile.jpg'" class="rounded mb-3">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                                <label>{{ 'BUDGET' | translate }}</label>
+                                <div class="input-group">
+                                    <input type="number" placeholder="" class="form-control" [(ngModel)]="budget">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">VND</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>CPC</label>
+                                <div class="input-group">
+                                    <input type="number" placeholder="" class="form-control" [(ngModel)]="cpc">
+                                    <div class="input-group-append">
+                                        <span class="input-group-text">VND</span>
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+                <!-- end col -->
+
+                <div class="col-md-6">
+                    <div class="p-20">
+                        <div class="form-group">
+                            <label>{{ 'TIME TYPE' | translate }}</label>
+                            <select class="form-control" (change)="selectTime($event.target.value)" [(ngModel)]="time_type">
+                                <option value="0">{{ 'Liên tục từ thời gian bắt đầu đến lúc kết thúc' | translate }}</option>
+                                <option value="1">{{ 'Khoảng thời gian lặp lại hằng ngày' | translate }}</option>
+                            </select>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-6">
+                                <label>{{ 'START TIME' | translate }}</label>
+                                <timepicker [(ngModel)]="startTimeSelect" [showMeridian]="false"></timepicker>
+                            </div>
+                            <div class="col-sm-6">
+                                <label>{{ 'END TIME' | translate }}</label>
+                                <timepicker [(ngModel)]="endTimeSelect" [showMeridian]="false"></timepicker>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-sm-6">
+                                    <label>{{ 'START DAY' | translate }}</label>
+                                    <input [(ngModel)]="startDaySelect" type="text" placeholder="Chọn ngày bắt đầu" [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }" bsDatepicker class="form-control" [readonly]=true>
+                            </div>
+                            <div class="col-sm-6">
+                                    <label>{{ 'END DAY' | translate }}</label>
+                                    <input [(ngModel)]="endDaySelect" type="text" placeholder="Chọn ngày kết thúc" [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }" bsDatepicker class="form-control" [readonly]=true>
+                            </div>
+                        </div>
+                       
+                    </div>
+                </div>
+                <!-- end col -->
+            </div>
+            <!-- end row -->
+        </div>
+    </div>
+    <!-- end col -->
+</div>

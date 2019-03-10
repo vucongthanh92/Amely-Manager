@@ -1,0 +1,45 @@
+<div class="row">
+    <div class="col-12">
+        <div class="card-box table-responsive">
+            <div class="row">
+                <h3 class="col-6 m-0 p-20 text-uppercase">{{ 'PERMISSION MANAGER' | translate }}</h3>
+                <div class="col-6 text-right p-20">
+                    <button [routerLink]="['./add']" target="_self" class="btn btn-outline-info m-b-5 pull-right">
+                        <i class="fa fa-plus m-r-5"></i><span>{{ 'ADD PERMISSION' | translate }}</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="clearfix"></div>
+            <table class="table table-bordered text-center">
+                <thead>
+                    <tr class="bg-info text-white">
+                        <th>{{ 'PERMISSION NAME' | translate }}</th>
+                        <th>{{ 'TIME CREATED' | translate }}</th>
+                        <th>{{ 'STATUS' | translate }}</th>
+                        <th>{{ 'ACTION' | translate }}</th>
+                    </tr>
+                </thead>
+                <tbody *ngIf="rules && rules.length > 0">
+                    <tr *ngFor="let rule of rules">
+                        <td>
+                            <a class="text-info" [routerLink]="['/admin/permission', rule.id]">
+                                 {{ rule.title }}
+                            </a>
+                        </td>
+                        <td>{{ rule.time_created * 1000 | date:'dd-MM-yyyy H:mm:ss'}}</td>
+                        <td>
+                            <div *ngIf="rule.status === '1'" class="text-success">{{ 'ON' | translate }}</div>
+                            <div *ngIf="rule.status === '0'" class="text-danger">{{ 'CLOSE' | translate }}</div>
+                        </td>
+                        <td>
+                            <button *ngIf="rule.id !== '1' && rule.id !== '2'" (click)="deletePermission(rule.id)" class="btn btn-icon waves-effect waves-light btn-danger m-b-5">
+                                <i class="fa fa-remove"></i>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

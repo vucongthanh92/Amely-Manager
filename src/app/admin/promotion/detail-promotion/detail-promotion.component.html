@@ -1,0 +1,110 @@
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card-box table-responsive">
+            <div class="page-header">
+                <h3 class="page-title">
+                    <span class="page-title-icon bg-gradient-info text-white mr-2">
+                        <i class="mdi mdi-sale"></i>
+                    </span>
+                    {{ 'PROMOTION DEAIL' | translate }}
+                </h3>
+            </div>
+            <button (click)="delPromotion(promotion.id)" class="pull-right btn btn-outline-danger m-b-5 m-2">
+                <i class="fa fa-trash"></i> {{ 'DELETE' | translate }}
+            </button>
+            <button (click)="updatePromotion()" class="pull-right btn btn-outline-info m-b-5 m-2">
+                <i class="fa fa-pencil"></i> {{ labelUpdate }}
+            </button>
+            <div class="clearfix"></div>
+            <div *ngIf="promotion" class="row">
+                <div class="col-lg-6">
+                    <table class="table table-bordered table-striped">
+                        <tbody>
+                            <tr>
+                                <td width="25%" class="font-weight-bold">{{ 'TITLE PROMOTION' | translate }}</td>
+                                <td width="75%">{{promotion.title}}</td>
+                            </tr>
+                            <tr>
+                                <td width="25%" class="font-weight-bold">{{ 'TIME CREATED' | translate }}</td>
+                                <td width="75%">{{ (promotion.time_created * 1000) | date:'dd-MM-yyyy H:mm:ss' }}</td>
+                            </tr>
+                            <tr>
+                                <td width="25%" class="font-weight-bold">{{ 'SHOP' | translate }}</td>
+                                <td width="75%">
+                                    {{ shop.title | translate }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="25%" class="font-weight-bold">{{ 'TYPE PROMOTION' | translate }}</td>
+                                <td width="75%">
+                                    <div *ngIf="promotion.time_type ==='1'; else typePromotion">{{ 'Khoảng thời gian
+                                        lặp lại hằng ngày' | translate }}</div>
+                                    <ng-template #typePromotion>
+                                        <div>{{ 'Thời gian kéo dài từ lúc bắt đầu đến lúc kết thúc' | translate }}</div>
+                                    </ng-template>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-lg-6">
+                    <table class="table table-bordered table-striped">
+                        <tbody>
+                            <tr>
+                                <td width="25%" class="font-weight-bold">{{ 'START TIME' | translate }}</td>
+                                <td width="75%">{{ (promotion.start_time * 1000) | date:'dd-MM-yyyy H:mm:ss' }}</td>
+                            </tr>
+                            <tr>
+                                <td width="25%" class="font-weight-bold">{{ 'END TIME' | translate }}</td>
+                                <td width="75%">{{ (promotion.end_time * 1000) | date:'dd-MM-yyyy H:mm:ss' }}</td>
+                            </tr>
+                            <tr>
+                                <td width="25%" class="font-weight-bold">{{ 'STATUS' | translate }}</td>
+                                <td width="75%">
+                                    <div *ngIf="promotion.status ==='0'; else statusProduct">{{ 'CLOSE' | translate }}</div>
+                                    <ng-template #statusProduct>
+                                        <div>{{ 'OPEN' | translate }}</div>
+                                    </ng-template>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="25%" class="font-weight-bold">
+                                    {{ 'APPROVAL' | translate }}
+                                </td>
+                                <td width="75%">
+                                    <div *ngIf="promotion.approved ==='0'; else approved">{{ 'UNAPPROVED' | translate
+                                        }}</div>
+                                    <ng-template #approved>
+                                        <div>{{ 'APPROVED' | translate }}</div>
+                                    </ng-template>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-lg-12">
+                    <div class="card-box">
+                        <h4 class="">{{ 'PRODUCT PROMOTION' | translate }}</h4>
+                        <div *ngIf="promotion.items; else emptyProduct" class="form-group row">
+                            <ng-container *ngFor="let item of promotion.items; let i = index">
+                                <div *ngIf="item.product" class="col-2">
+                                    <div *ngIf="item.product.images.length > 0" class="product_images">
+                                        <img src="{{ item.product.images[0] }}">
+                                    </div>
+                                    <div class="product_title">{{ item.product.title }}</div>
+                                    <div *ngIf="item.price && item.price !='0'" class="product_price">Giá khuyến mãi:
+                                        {{ item.price | currency:'VND':'' }}</div>
+                                    <div *ngIf="item.percent && item.percent != '0'" class="product_price">Phần trăm
+                                        khuyến mãi: {{ item.percent }}%</div>
+                                </div>
+                            </ng-container>
+                        </div>
+                        <ng-template #emptyProduct>
+                            <div>{{ 'Không có sản phẩm' | translate }}</div>
+                        </ng-template>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

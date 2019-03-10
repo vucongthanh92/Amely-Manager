@@ -1,0 +1,213 @@
+<div class="row">
+  <div class="col-lg-12">
+    <div class="card-box table-responsive">
+      <div class="col-xl-auto">
+          <h4 class="page-title" style="color: #6c757d;" *ngIf="order">
+            {{ 'ORDER DETAIL' | translate }} #{{order.so.display_order}}
+          </h4>
+      </div>
+      <div class="clearfix"></div>
+      <div class="row">
+        <div class="col-lg-8">
+          <div class="card m-b-20">
+            <div class="card-header font-weight-bold">
+              {{ 'CUSTOMER DETAIL' | translate }}
+            </div>
+            <div class="card-body">
+              <blockquote class="card-bodyquote">
+                <div class="row" *ngIf="order">
+                  <div class="col-md-6">
+                    <table class="tg">
+                      <tr>
+                        <th class="tg-s268" style="text-align:right; color: #999">{{ 'TIME CREATED' | translate }}</th>
+                        <th class="tg-0lax">{{ order.so.time_created * 1000 | date:'dd-MM-yyyy H:mm:ss'}}</th>
+                      </tr>
+                      <tr>
+                        <td class="tg-0lax" style="text-align:right; color: #999">{{ 'CUSTOMER NAME' | translate }}</td>
+                        <td class="tg-0lax">{{ order.customer.fullname}}</td>
+                      </tr>
+                      <tr>
+                        <td class="tg-0lax" style="text-align:right; color: #999">{{ 'CUSTOMER PHONE' | translate }}</td>
+                        <td class="tg-0lax">{{ order.customer.mobilelogin}}</td>
+                      </tr>
+                    </table>
+                  </div>
+                  <div class="col-md-6">
+                    <table class="tg">
+                      <tr>
+                        <td class="tg-0lax" style="text-align:right; color: #999">{{ 'TOTAL' | translate }}</td>
+                        <td class="tg-0lax">{{ formatAmount(order.so.total)}}</td>
+                      </tr>
+                      <tr>
+                        <td class="tg-0lax" style="text-align:right; color: #999">{{ 'SHIPPING FEE' | translate }}</td>
+                        <td class="tg-0lax">{{ formatAmount(order.so.shipping_fee)}}</td>
+                      </tr>
+                      <tr>
+                        <th class="tg-s268" style="text-align:right; color: #999">{{ 'PAYMENT METHOD' | translate }}</th>
+                        <th class="tg-0lax">
+                          <label *ngIf="order.po.payment_method == 'onepay/opatm'">{{ 'Tài khoản Paypal' | translate }}</label>
+                          <label *ngIf="order.po.payment_method == 'paypal/standard'">{{ 'OnePay thẻ ATM nội địa' | translate }}</label>
+                          <label *ngIf="order.po.payment_method == 'onepay/opcreditcard'">{{ 'OnePay thẻ quốc tế Visa/Master' | translate }}</label>
+                          <label *ngIf="order.po.payment_method == 'quickpay/cod'">{{ 'Tiền mặt giao hàng' | translate }}</label>
+                          <label *ngIf="order.po.payment_method == 'quickpay/cos'">{{ 'Tiền mặt, hàng vào kho' | translate }}</label>
+                        </th>
+                      </tr>
+                    </table>
+                  </div>
+
+                </div>
+              </blockquote>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-2">
+          <div class="card m-b-20">
+            <div class="card-header font-weight-bold">
+              {{ 'PAYMENT ADDRESS' | translate }}
+            </div>
+            <div class="card-body">
+              <blockquote class="card-bodyquote" *ngIf="order">
+                <label *ngIf="order.po.shipping_address; else orther">{{ order.po.shipping_address}}</label>
+                <ng-template #orther>
+                  <label *ngIf="order.po.shipping_method == 'sq/storage'" style="text-align:right; color: #999">{{ 'Kho của tôi' | translate }}</label>
+                  <label *ngIf="order.po.shipping_method == 'sq/pickup'" style="text-align:right; color: #999">{{ 'Nhận tại cửa hàng' | translate }}</label>
+                  <label *ngIf="order.po.shipping_method == 'sq/express'" style="text-align:right; color: #999">{{ 'Giao hàng tiết kiệm' | translate }}</label>
+                </ng-template>
+              </blockquote>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-2">
+          <div class="card m-b-20">
+            <div class="card-header font-weight-bold">
+              {{ 'DELIVERY ADDRESS' | translate }}
+            </div>
+            <div class="card-body">
+              <blockquote class="card-bodyquote" *ngIf="order">
+                  <label *ngIf="order.po.shipping_address; else orther">{{ order.po.shipping_address}}</label>
+                  <ng-template #orther>
+                    <label *ngIf="order.po.shipping_method == 'sq/storage'" style="text-align:right; color: #999">{{ 'Kho của tôi' | translate }}</label>
+                    <label *ngIf="order.po.shipping_method == 'sq/pickup'" style="text-align:right; color: #999">{{ 'Nhận tại cửa hàng' | translate }}</label>
+                    <label *ngIf="order.po.shipping_method == 'sq/express'" style="text-align:right; color: #999">{{ 'Giao hàng tiết kiệm' | translate }}</label>
+                  </ng-template>
+              </blockquote>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="m-b-20">
+              <h4>{{ 'PRODUCT' | translate }}</h4>
+            <table id="datatable" class="table table-bordered text-center">
+              <thead>
+                <tr>
+                    <th>{{ 'IMAGE' | translate }}</th>
+                    <th>{{ 'SKU' | translate }}</th>
+                    <th>{{ 'TITLE PRODUCT' | translate }}</th>
+                    <th>{{ 'PRICE' | translate }}</th>
+                    <th>{{ 'TAX' | translate }}</th>
+                    <th>{{ 'UNIT' | translate }}</th>
+                    <th>{{ 'QUANTITY' | translate }}</th>
+                </tr>
+              </thead>
+
+              <tbody *ngIf="order">
+                <tr *ngFor="let item of order.items">
+                    <td> <img src="{{item.images}}" style="width: 70px; height: 70px;"></td>
+                    <td>{{item.sku}}</td>
+                    <td>{{item.title}}</td>
+                    <td>{{ formatAmount(item.display_price)}}</td>
+                    <td>{{item.tax}}%</td>
+                    <td>{{item.unit}}</td>
+                    <td>{{item.display_quantity}}</td>
+                </tr>
+                
+              </tbody>
+            </table>
+            <p style="margin: 5px; text-align: right;">
+                <i style="color: #999">
+                    * Đã bao gồm thuế
+                </i>
+            </p>
+            <div *ngIf="order">
+              <h4 *ngIf="order.dos">{{ 'DELIVERY' | translate }}</h4>
+            </div>
+            <table id="datatable" class="table table-bordered text-center" *ngIf="order">
+                <thead *ngIf="order.dos">
+                    <tr>
+                        <th>{{ 'CODE DELIVERY' | translate }}</th>
+                        <th>{{ 'CUSTOMER NAME' | translate }}</th>
+                        <th>{{ 'SHIPPING METHOD' | translate }}</th>
+                        <th>{{ 'ORDER DATE' | translate }}</th>
+                        <th>{{ 'STATUS' | translate }}</th>
+                    </tr>
+                </thead>
+
+                <tbody *ngIf="order">
+                    <tr *ngFor="let delivery of order.dos">
+                        <td><a class="text-info" [routerLink]="['/delivery', delivery.id]">{{ delivery.display_order }}</a></td>
+                        <td>{{ delivery.shipping_fullname}}</td>
+                        <td>
+                          <p *ngIf="delivery.shipping_method == 'sq/storage'">{{ 'Kho của tôi' | translate }}</p>
+                          <p *ngIf="delivery.shipping_method == 'sq/pickup'">{{ 'Nhận tại cửa hàng' | translate }}</p>
+                          <p *ngIf="delivery.shipping_method == 'sq/express'">{{ 'Giao hàng tiết kiệm' | translate }}</p>
+                        </td>
+                        <td>{{delivery.time_created * 1000 | date:'dd-MM-yyyy H:mm:ss'}}</td>
+                        <td>
+                            <label style="color: red;" *ngIf="delivery.status == 0; else notStatus">{{
+                                'PENDING' | translate }}</label>
+                            <ng-template #notStatus>
+                                <label style="color: #10c469;" *ngIf="delivery.status">{{ 'SUCCESS' |
+                                    translate }}</label>
+                            </ng-template>
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+            <div  *ngIf="order">
+              <h4 *ngIf="order.redeems">{{ 'REDEEM' | translate }}</h4>
+            </div>
+            <table id="datatable" class="table table-bordered text-center" *ngIf="order">
+                <thead *ngIf="order.redeems">
+                    <tr>
+                        <th>{{ 'CODE REDEEM' | translate }}</th>
+                        <th>{{ 'CUSTOMER REDEEM' | translate }}</th>
+                        <th>{{ 'TIME REDEEM' | translate }}</th>
+                        <th>{{ 'TITLE STORE' | translate }}</th>
+                        <th>{{ 'IMAGE' | translate }}</th>
+                        <th>{{ 'TITLE PRODUCT' | translate }}</th>
+                        <th>{{ 'QUANTITY' | translate }}</th>
+                    </tr>
+                </thead>
+
+                <tbody *ngIf="order">
+                    <tr *ngFor="let redeem of order.redeems">
+                        <td>
+                          <div class="crop">
+                            <a [routerLink]="['/redeem', redeem.id]">{{redeem.code}}</a>
+                          </div>
+                        </td>
+                        <td>{{redeem.customer.fullname}}</td>
+                        <td>{{redeem.time_created * 1000 | date:'dd-MM-yyyy H:mm:ss'}}</td>
+                        <td>{{redeem.store.title}}</td>
+                        <td>
+                          <img src="{{redeem.item.snapshot.images}}" style="width: 70px; height: 70px;">
+                        </td>
+                        <td>{{redeem.item.snapshot.title}}</td>
+                        <td>{{redeem.quantity}}</td>
+                    </tr>
+
+                </tbody>
+            </table>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+    <!-- end row -->
+  </div>
+</div>
+<!-- end col -->

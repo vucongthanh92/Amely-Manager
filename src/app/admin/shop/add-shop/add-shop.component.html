@@ -1,0 +1,229 @@
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card-box">
+                <div class="page-header">
+                        <h3 class="page-title">
+                            <span class="page-title-icon bg-gradient-info text-white mr-2">
+                                <i class="fa fa-bank"></i>
+                            </span>
+                            {{ 'ADD SHOP' | translate }}
+                        </h3>
+                    </div>
+            <div class="col-xl-auto">
+                <a (click)="createShop()" [ladda]="isLoading" target="_self" class="pull-right btn btn-outline-success btn-fw" *ngIf="is_shop"><i class="fa fa-check"></i> {{ 'SAVE' | translate }}</a>
+            </div>
+            <div class="clearfix"></div>
+            <div class="row">
+                <div class="col-md-12">
+
+                    <div class="p-20 form-group">
+                        <label>{{ 'USER NAME' | translate }}</label>
+
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" [(ngModel)]="userSelect" placeholder="{{ 'USER NAME' | translate }}" aria-describedby="basic-addon2">
+                            <div class="input-group-append">
+                                <button (click)="onUserSearch()" class="btn btn-outline-info" type="button">{{ 'SEARCH' | translate }}</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group" *ngIf="user">
+                        <div class="p-20 row">
+                            <div class="col-md-6">
+                                <table class="table table-bordered table-striped">
+                                    <tbody>
+                                        <tr>
+                                            <td width="25%" class="font-weight-bold">{{ 'OWNER NAME' | translate }}</td>
+                                            <td width="75%">{{user.fullname}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td width="25%" class="font-weight-bold">{{ 'OWNER ADDRESS' | translate }}</td>
+                                            <td width="75%">{{user.full_address}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-md-6">
+                                <table class="table table-bordered
+                                    table-striped">
+                                    <tbody>
+                                        <tr>
+                                            <td width="25%" class="font-weight-bold">{{ 'OWNER PHONE' | translate }}</td>
+                                            <td width="75%">{{user.mobilelogin}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td width="25%" class="font-weight-bold">{{ 'EMAIL' | translate }}</td>
+                                            <td width="75%">{{user.email}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+                        <div class="p-20 row">
+                            <div class="form-group m-b-0 col-md-6" *ngIf="is_shop">
+                                <label>{{ 'OWNER SSN' | translate }} <label class="">*</label></label>
+                                <input type="text" placeholder="" [(ngModel)]="owner_ssn" class="form-control">
+                            </div>
+
+                            <div class="col-md-6" *ngIf="!is_shop">
+                                <table class="table table-bordered
+                                    table-striped" *ngIf="user.shop">
+                                    <tbody>
+                                        <tr>
+                                            <td width="25%" class="font-weight-bold">{{'TITLE SHOP' | translate }}</td>
+                                            <td width="75%">{{user.shop.title}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td width="25%" class="font-weight-bold">{{'PHONE' | translate }}</td>
+                                            <td width="75%">{{user.shop.owner_phone}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-md-6" *ngIf="!is_shop">
+                                <table class="table table-bordered
+                                    table-striped">
+                                    <tbody>
+                                        <tr>
+                                            <td width="25%" class="font-weight-bold">{{'SHOP ADDRESS' | translate }}</td>
+                                            <td width="75%">{{user.shop.owner_full_address}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td width="25%" class="font-weight-bold">{{'BIDN' | translate }}</td>
+                                            <td width="75%">{{user.shop.shop_bidn}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" *ngIf="is_shop">
+                <div class="col-md-6">
+                    <div class="p-20">
+
+                        <div class="form-group">
+                            <label>{{ 'TITLE SHOP' | translate }} <label class="">*</label></label>
+                            <input [(ngModel)]="title" (change)="convertToFriendlyURL(title)" type="text" placeholder="" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>{{ 'SHOP BIDN' | translate }} <label class="">*</label></label>
+                            <input type="text" placeholder="" [(ngModel)]="shop_bidn" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>{{ 'IMAGE AVATAR' | translate }} <label class="">*</label></label>
+                            <br>
+                            <input type="file" multiple (change)="detectFilesAvatar($event)">
+                            <div *ngIf="avatarUrl" class="category_image">
+                                <img [src]="avatarUrl" onError="this.src='assets/images/profile.jpg'" class="rounded mb-3">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- end col -->
+
+                <div class="col-md-6">
+                    <div class="p-20">
+                        <div class="form-group">
+                            <label>{{ 'FRIEND URL' | translate }} <label class="">*</label></label>
+                            <input type="text" placeholder="" [(ngModel)]="friendly_url"  (change)='convertToFriendlyURL(friendly_url)'class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>{{ 'PHONE' | translate }} <label class="">*</label></label>
+                            <input type="text" [(ngModel)]="store_phone" [pattern]="customService.phonePattern" #phonePattern="ngModel" class="form-control">
+                            <p style="color: red" *ngIf="phonePattern.errors?.pattern"> 
+                                {{ 'PHONEPATTERN' | translate }}
+                            </p>
+                        </div>
+                        <div class="form-group">
+                            <label>{{ 'IMAGE COVER' | translate }} <label class="">*</label></label>
+                            <br>
+                            <input type="file" multiple (change)="detectFilesCover($event)">
+                            <div *ngIf="coverUrl" class="category_image">
+                                <img [src]="coverUrl" onError="this.src='assets/images/profile.jpg'" class="rounded mb-3">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- end col -->
+            </div>
+            <!-- end row -->
+        </div>
+
+    </div>
+    <!-- end col -->
+    <div class="col-lg-4" *ngIf="is_shop">
+        <div class="card-box">
+            <div class="clearfix"></div>
+            <div class="p-20">
+                <div class="form-group">
+                    <label>{{ 'SHOP ADDRESS' | translate }}</label>
+                    <agm-map [latitude]="lat" [longitude]="lng" class="gmaps">
+                        <agm-marker [latitude]="lat" [longitude]="lng"></agm-marker>
+                    </agm-map>
+                </div>
+                <div class="form-group">
+                    <label>{{ 'ADDRESS' | translate }} <label class="">*</label></label>
+                    <input type="text" placeholder="" [(ngModel)]="store_address" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>{{ 'PROVINCE' | translate }} <label class="">*</label></label>
+                    <select class="form-control" (ngModelChange)="onProvinceChange($event)" [(ngModel)]="province">
+                        <optgroup label="PROVINCES">
+                            <option *ngFor="let province of provinces" [ngValue]="province">{{ province.name }}</option>
+                        </optgroup>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>{{ 'DISTRICT' | translate }} <label class="">*</label></label>
+                    <select class="form-control" (ngModelChange)="onDistrictChange($event)" [(ngModel)]="district">
+                        <optgroup label="DISTRICTS">
+                            <option *ngFor="let district of districts" [ngValue]="district">{{ district.name }}</option>
+                        </optgroup>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>{{ 'WARD' | translate }} <label class="">*</label></label>
+                    <select class="form-control" (ngModelChange)="onWardChange($event)" [(ngModel)]="ward">
+                        <optgroup label="WARDS">
+                            <option *ngFor="let ward of wards" [ngValue]="ward">{{ ward.name }}</option>
+                        </optgroup>
+                    </select>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- end col -->
+</div>
+<div class="row" *ngIf="is_shop">
+    <div class="col-lg-12">
+        <div class="card-box">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>{{ 'POLICY' | translate }}</label>
+                        <editor [(ngModel)]="policy"></editor>
+                    </div>
+                    <div class="form-group">
+                        <label>{{ 'DESCRIPTION' | translate }}</label>
+                        <editor [(ngModel)]="description"></editor>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>{{ 'CONTACT' | translate }}</label>
+                        <editor [(ngModel)]="contact"></editor>
+                    </div>
+                    <div class="form-group">
+                        <label>{{ 'INTRODUCE' | translate }}</label>
+                        <editor [(ngModel)]="introduce"></editor>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

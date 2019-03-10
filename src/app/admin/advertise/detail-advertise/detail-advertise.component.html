@@ -1,0 +1,257 @@
+<div class="row">
+    <div class="col-lg-12">
+            <div class="card-box table-responsive">
+            <h4 class="header-title m-t-0 m-b-30">{{ 'ADVERTISE DETAIL' | translate }}</h4>
+            <div class="col-lg-12">
+                    <button (click)="deleteAdvertise(advertise.id)" class="pull-right btn btn-outline-danger btn-fw m-b-5 m-2" [routerLink]="">
+                                <i class="fa fa-trash"></i> {{ 'DELETE' | translate }}
+                            </button>
+            </div>
+            <div class="clearfix"></div>
+            <div class="row">
+                <div class="col-lg-6" *ngIf="advertise">
+                    <div class="card m-b-20">
+                        <div class="card-header font-weight-bold">
+                            {{ 'SHOP AND CREATOR' | translate }}
+                        </div>
+                        <div class="card-body">
+                            <blockquote class="card-bodyquote">
+                                <div class="row">
+                                    <div class="col-lg-2">
+                                      <img src="{{ advertise.shop.avatar }}" width="100px" height="90px" onError="this.src='assets/images/profile.jpg'">
+                                    </div>
+                                    <div class="col-lg-10">
+                                      <table class="table table-bordered table-striped">
+                                          <tbody>
+                                              <tr>
+                                                  <td width="25%" class="font-weight-bold">{{ 'TITLE SHOP' | translate }}</td>
+                                                  <td width="75%">{{ advertise.shop.title }}</td>
+                                              </tr>
+                                              <tr>
+                                                  <td width="25%" class="font-weight-bold">{{ 'PHONE' | translate }}</td>
+                                                  <td width="75%">{{ advertise.shop.owner_phone }}</td>
+                                              </tr>
+                                              <tr>
+                                                  <td width="25%" class="font-weight-bold">{{ 'ADDRESS' | translate }}</td>
+                                                  <td width="75%">{{ advertise.shop.owner_full_address }}</td>
+                                              </tr>
+                                              <tr>
+                                                  <td width="25%" class="font-weight-bold">{{ 'SHOP BIDN' | translate }}</td>
+                                                  <td width="75%">{{ advertise.shop.shop_bidn }}</td>
+                                              </tr>
+                                          </tbody>
+                                      </table>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-2">
+                                      <img src="{{ advertise.creator.avatar }}" width="100px" height="90px" onError="this.src='assets/images/profile.jpg'">
+                                    </div>
+                                    <div class="col-lg-10">
+                                      <table class="table table-bordered table-striped">
+                                          <tbody>
+                                              <tr>
+                                                  <td width="25%" class="font-weight-bold">{{ 'TITLE CREATOR' | translate }}</td>
+                                                  <td width="75%">{{ advertise.creator.fullname }}</td>
+                                              </tr>
+                                              <tr>
+                                                  <td width="25%" class="font-weight-bold">{{ 'PHONE' | translate }}</td>
+                                                  <td width="75%">{{ advertise.creator.mobilelogin }}</td>
+                                              </tr>
+                                          </tbody>
+                                      </table>
+                                    </div>
+                                </div>
+                            </blockquote>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6" *ngIf="advertiseType == '0'">
+                    <div class="card m-b-20"  *ngIf="advertise">
+                        <div class="card-header font-weight-bold">
+                            {{ 'ADVERTISE PRODUCT' | translate }}
+                        </div>
+                        <div class="card-body">
+                            <blockquote class="card-bodyquote">
+                                <div class="row">
+                                    <div class="col-lg-2">
+                                      <img src="{{ advertise.product.images[0] }}" width="100px" height="90px" onError="this.src='assets/images/profile.jpg'">
+                                    </div>
+                                    <div class="col-lg-10">
+                                      <table class="table table-bordered table-striped">
+                                          <tbody>
+                                              <tr>
+                                                  <td width="25%" class="font-weight-bold">{{ 'TITLE PRODUCT' | translate }}</td>
+                                                  <td width="75%">{{ advertise.product.title }}</td>
+                                              </tr>
+                                              <tr>
+                                                  <td width="25%" class="font-weight-bold">{{ 'SKU' | translate }}</td>
+                                                  <td width="75%">{{ advertise.product.sku }}</td>
+                                              </tr>
+                                          </tbody>
+                                      </table>
+                                    </div>
+                                </div>
+                                <table class="table table-bordered table-striped">
+                                        <tbody>
+                                            <tr>
+                                                <td width="25%" class="font-weight-bold">{{ 'CPC' | translate }}</td>
+                                                <td width="75%">{{formatAmount(advertise.cpc)}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td width="25%" class="font-weight-bold">{{ 'AMOUNT' | translate }}</td>
+                                                <td width="75%">{{formatAmount(advertise.amount)}}</td>
+                                            </tr>
+                                            <tr>
+                                                <td width="25%" class="font-weight-bold">{{ 'BUDGET' | translate }}</td>
+                                                <td width="75%">{{formatAmount(advertise.budget)}}</td>
+                                            </tr>
+                                            <!-- <tr>
+                                                <td width="25%" class="font-weight-bold">{{ 'TIME TYPE' | translate }}</td>
+                                                <td width="75%" *ngIf="advertise.time_type == 0">{{ 'Liên tục từ thời gian bắt đầu đến lúc kết thúc' | translate }}</td>
+                                                <td width="75%" *ngIf="advertise.time_type == 1">{{ 'Khoảng thời gian lặp lại hằng ngày' | translate }}</td>
+                                            </tr> -->
+                                            <tr *ngIf="advertise.time_type == 0">
+                                                <td width="25%" class="font-weight-bold">{{ 'START -> END' | translate }}</td>
+                                                <td width="75%">{{ advertise.start_time * 1000 | date:'dd-MM-yyyy H:mm:ss'}} -> {{ advertise.end_time * 1000 | date:'dd-MM-yyyy H:mm:ss'}}</td>
+                                            </tr>
+                                            <tr *ngIf="advertise.time_type == 1">
+                                                <td width="25%" class="font-weight-bold">{{ 'DAY START -> DAY END' | translate }}</td>
+                                                <td width="75%">{{ advertise.start_time * 1000 | date:'dd-MM-yyyy'}} -> {{ advertise.end_time * 1000 | date:'dd-MM-yyyy'}}</td>
+                                            </tr>
+                                            <tr *ngIf="advertise.time_type == 1">
+                                                <td width="25%" class="font-weight-bold">{{ 'RUNTIME OF THE DAY' | translate }}</td>
+                                                <td width="75%">{{ advertise.start_time * 1000 | date:'H:mm:ss'}} -> {{ advertise.end_time * 1000 | date:'H:mm:ss'}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                            </blockquote>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6"  *ngIf="advertiseType == '1'">
+                    <div class="card m-b-20"  *ngIf="advertise">
+                        <div class="card-header font-weight-bold">
+                            {{ 'ADVERTISE SHOP' | translate }}
+                        </div>
+                        <div class="card-body">
+                            <blockquote class="card-bodyquote">
+                                <div class="row">
+                                    <div class="col-lg-2">
+                                      <img src="{{ advertise.shop.avatar }}" width="100px" height="90px" onError="this.src='assets/images/profile.jpg'">
+                                    </div>
+                                    <div class="col-lg-10">
+                                      <table class="table table-bordered table-striped">
+                                          <tbody>
+                                              <tr>
+                                                  <td width="25%" class="font-weight-bold">{{ 'TITLE SHOP' | translate }}</td>
+                                                  <td width="75%">{{ advertise.shop.title }}</td>
+                                              </tr>
+                                              <tr>
+                                                  <td width="25%" class="font-weight-bold">{{ 'PHONE' | translate }}</td>
+                                                  <td width="75%">{{ advertise.shop.owner_phone }}</td>
+                                              </tr>
+                                          </tbody>
+                                      </table>
+                                    </div>
+                                </div>
+                                <table class="table table-bordered table-striped">
+                                    <tbody>
+                                        <tr>
+                                            <td width="25%" class="font-weight-bold">{{ 'CPC' | translate }}</td>
+                                            <td width="75%">{{formatAmount(advertise.cpc)}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td width="25%" class="font-weight-bold">{{ 'AMOUNT' | translate }}</td>
+                                            <td width="75%">{{formatAmount(advertise.amount)}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td width="25%" class="font-weight-bold">{{ 'BUDGET' | translate }}</td>
+                                            <td width="75%">{{formatAmount(advertise.budget)}}</td>
+                                        </tr>
+                                        <!-- <tr>
+                                            <td width="25%" class="font-weight-bold">{{ 'TIME TYPE' | translate }}</td>
+                                            <td width="75%" *ngIf="advertise.time_type == 0">{{ 'Liên tục từ thời gian bắt đầu đến lúc kết thúc' | translate }}</td>
+                                            <td width="75%" *ngIf="advertise.time_type == 1">{{ 'Khoảng thời gian lặp lại hằng ngày' | translate }}</td>
+                                        </tr> -->
+                                        <tr *ngIf="advertise.time_type == 0">
+                                            <td width="25%" class="font-weight-bold">{{ 'START -> END' | translate }}</td>
+                                            <td width="75%">{{ advertise.start_time * 1000 | date:'dd-MM-yyyy H:mm:ss'}} -> {{ advertise.end_time * 1000 | date:'dd-MM-yyyy H:mm:ss'}}</td>
+                                        </tr>
+                                        <tr *ngIf="advertise.time_type == 1">
+                                            <td width="25%" class="font-weight-bold">{{ 'DAY START -> DAY END' | translate }}</td>
+                                            <td width="75%">{{ advertise.start_time * 1000 | date:'dd-MM-yyyy'}} -> {{ advertise.end_time * 1000 | date:'dd-MM-yyyy'}}</td>
+                                        </tr>
+                                        <tr *ngIf="advertise.time_type == 1">
+                                            <td width="25%" class="font-weight-bold">{{ 'RUNTIME OF THE DAY' | translate }}</td>
+                                            <td width="75%">{{ advertise.start_time * 1000 | date:'H:mm:ss'}} -> {{ advertise.end_time * 1000 | date:'H:mm:ss'}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </blockquote>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6" *ngIf="advertiseType == '2'">
+                    <div class="card m-b-20"  *ngIf="advertise">
+                        <div class="card-header font-weight-bold">
+                            {{ 'ADVERTISE BANNER' | translate }}
+                        </div>
+                        <div class="card-body">
+                            <blockquote class="card-bodyquote">
+                                <div class="row">
+                                    <div class="col-lg-2">
+                                      <img src="{{ advertise.image }}" width="100px" height="90px" onError="this.src='assets/images/profile.jpg'">
+                                    </div>
+                                    <div class="col-lg-10">
+                                      <table class="table table-bordered table-striped">
+                                          <tbody>
+                                              <tr>
+                                                  <td width="25%" class="font-weight-bold">{{ 'URL BANNER' | translate }}</td>
+                                                  <td width="75%">{{ advertise.link }}</td>
+                                              </tr>
+                                          </tbody>
+                                      </table>
+                                    </div>
+                                </div>
+                                <table class="table table-bordered table-striped">
+                                    <tbody>
+                                        <tr>
+                                            <td width="25%" class="font-weight-bold">{{ 'CPC' | translate }}</td>
+                                            <td width="75%">{{formatAmount(advertise.cpc)}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td width="25%" class="font-weight-bold">{{ 'AMOUNT' | translate }}</td>
+                                            <td width="75%">{{formatAmount(advertise.amount)}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td width="25%" class="font-weight-bold">{{ 'BUDGET' | translate }}</td>
+                                            <td width="75%">{{formatAmount(advertise.budget)}}</td>
+                                        </tr>
+                                        <!-- <tr>
+                                            <td width="25%" class="font-weight-bold">{{ 'TIME TYPE' | translate }}</td>
+                                            <td width="75%" *ngIf="advertise.time_type == 0">{{ 'Liên tục từ thời gian bắt đầu đến lúc kết thúc' | translate }}</td>
+                                            <td width="75%" *ngIf="advertise.time_type == 1">{{ 'Khoảng thời gian lặp lại hằng ngày' | translate }}</td>
+                                        </tr> -->
+                                        <tr *ngIf="advertise.time_type == 0">
+                                            <td width="25%" class="font-weight-bold">{{ 'START -> END' | translate }}</td>
+                                            <td width="75%">{{ advertise.start_time * 1000 | date:'dd-MM-yyyy H:mm:ss'}} -> {{ advertise.end_time * 1000 | date:'dd-MM-yyyy H:mm:ss'}}</td>
+                                        </tr>
+                                        <tr *ngIf="advertise.time_type == 1">
+                                            <td width="25%" class="font-weight-bold">{{ 'DAY START -> DAY END' | translate }}</td>
+                                            <td width="75%">{{ advertise.start_time * 1000 | date:'dd-MM-yyyy'}} -> {{ advertise.end_time * 1000 | date:'dd-MM-yyyy'}}</td>
+                                        </tr>
+                                        <tr *ngIf="advertise.time_type == 1">
+                                            <td width="25%" class="font-weight-bold">{{ 'RUNTIME OF THE DAY' | translate }}</td>
+                                            <td width="75%">{{ advertise.start_time * 1000 | date:'H:mm:ss'}} -> {{ advertise.end_time * 1000 | date:'H:mm:ss'}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </blockquote>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div><!-- end row -->
+    </div>
+</div><!-- end col -->

@@ -1,0 +1,71 @@
+<div class="row">
+        <div class="col-lg-12">
+            <div class="card-box table-responsive">
+                <div class="page-header">
+                        <h3 class="page-title">
+                            <span class="page-title-icon bg-gradient-info text-white mr-2">
+                                <i class="fa fa-bars"></i>
+                            </span>
+                            {{ 'ADD CATEGORY' | translate }}
+                        </h3>
+                    </div>
+                    <div class="col-xl-auto">
+                            <button (click)='saveCategory()' type="button" class="btn btn-outline-success btn-fw m-b-5 pull-right" [ladda]="isLoading"><i class="fa fa-check"></i> {{ 'SAVE' | translate }}</button>
+                        </div>
+                        <div class="clearfix"></div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="p-20">
+                        <div class="form-group">
+                            <label>{{ 'TITLE CATEGORY' | translate }}</label>
+                            <input [(ngModel)]='category.title' (change)="convertToFriendlyURL(category.title)" type="text" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>{{ 'DESCRIPTION' | translate }}</label>
+                            <editor [(ngModel)]="category.description"></editor>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="p-20">
+                        <div class="form-group" *ngIf="customService.isAdmin">
+                            <label>{{ 'TYPE CATEGORY' | translate }}</label>
+                            <ng-select *ngIf="listTypeCategory" (change)="selectTypeCategories()" [(ngModel)]='category.subtype' [items]="listTypeCategory" 
+                                bindLabel="title" bindValue="id">
+                            </ng-select>
+                        </div>
+                        <div *ngIf="customService.isAdmin && category.subtype == '3'" class="form-group">
+                            <label>{{ 'CHOOSE SHOP' | translate }}</label>
+                            <ng-select (change)="selectShop()" [items]="shopCategories" bindLabel="title" bindValue="id" [(ngModel)]='shopId'>
+                            </ng-select>
+                        </div>
+                        <div *ngIf="marketCategories.length > 0" class="form-group">
+                            <label>{{ 'CHOOSE PARENT' | translate }}</label>
+                            <ng-select [(ngModel)]='category.parent_id' [items]="marketCategories" 
+                                bindLabel="title" bindValue="id">
+                            </ng-select>
+                        </div>
+                        <div class="form-group">
+                            <label>{{ 'SORT ORDER' | translate }}</label>
+                            <input [(ngModel)]='category.sort_order' min="0" type="number" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>{{ 'ENABLE' | translate }}</label>
+                            <ng-select [items]="enabledCategory" bindLabel="title" bindValue="id"
+                                [(ngModel)]='category.enabled'>
+                            </ng-select>
+                        </div>
+                        <div class="form-group">
+                            <label>{{ 'IMAGE' | translate }}</label><br>
+                            <input type="file" multiple (change)="detectFiles($event)">
+                            <div *ngIf="logoUrl" class="category_image">
+                                <img [src]="logoUrl" onError="this.src='assets/images/profile.jpg'" class="rounded mb-3">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

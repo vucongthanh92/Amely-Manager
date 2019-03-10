@@ -1,0 +1,43 @@
+<div class="wrapper-page">
+    <div class="text-center">
+        <a href="#" class="logo"><span>Amely<span> Web-Backend</span></span></a>
+        <h5 class="text-muted mt-0 font-600">Welcome to Amely Web-Backend</h5>
+    </div>
+
+    <div class="m-t-40 card-box">
+        <div class="text-center">
+            <h4 class="text-uppercase font-bold mb-0">{{ 'SIGN IN' | translate }}</h4>
+        </div>
+        <div class="p-20">
+            <form (ngSubmit)="onLogin()" class="form-horizontal m-t-20">
+                <div class="form-group">
+                    <div class="col-xs-12">
+                        <input name="username" [(ngModel)]="username" class="form-control" type="text" placeholder="{{ 'USERNAME' | translate }}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-xs-12">
+                        <input name="password" [(ngModel)]="password" class="form-control" type="password" placeholder="{{ 'PASSWORD' | translate }}">
+                    </div>
+                </div>
+                <div class="form-group text-center m-t-30">
+                    <div class="col-xs-12">
+                        <button type="submit" class="btn btn-custom btn-bordred btn-block waves-effect waves-light" (click)="onSubmit()">{{ 'SIGN IN' | translate }}</button>
+                    </div>
+                </div>
+
+                <!-- <div class="form-group m-t-30 mb-0">
+                    <div class="col-sm-12">
+                        <a [routerLink]="['/auth/forgot']" class="text-muted"><i class="fa fa-lock m-r-5"></i> Forgot your password?</a>
+                    </div>
+                </div> -->
+            </form>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12 text-center">
+            <p class="text-muted"> <a href="https://amely.vn/vi/lien-lac/dang-ky/" class="text-primary m-l-5"><b>Đăng ký cửa hàng</b></a></p>
+        </div>
+    </div>
+</div>

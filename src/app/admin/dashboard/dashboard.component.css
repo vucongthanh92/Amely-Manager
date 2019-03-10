@@ -1,0 +1,123 @@
+.nav-item .active {
+    /* background-color: #35b8e0; */
+    /* background-image: -webkit-linear-gradient(90deg, #3f5efb 0%, #fc466b 100%); */
+    background-image: -webkit-linear-gradient(90deg, #38ef7d 0%, #35b8e0 100%);
+    color: #fff;
+}
+
+.stretch-card {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-align-items: stretch;
+    align-items: stretch;
+    -webkit-justify-content: stretch;
+    justify-content: stretch;
+  }
+  
+  .stretch-card > .card {
+    width: 100%;
+    min-width: 100%;
+  }
+
+  .grid-margin, .purchase-popup {
+    margin-bottom: 2.5rem;
+  }
+  
+  @media (min-width: 576px) {
+    .grid-margin-sm-0 {
+      margin-bottom: 0;
+    }
+  }
+  
+  @media (min-width: 768px) {
+    .grid-margin-md-0 {
+      margin-bottom: 0;
+    }
+  }
+  
+  @media (min-width: 992px) {
+    .grid-margin-lg-0 {
+      margin-bottom: 0;
+    }
+  }
+  
+  @media (min-width: 1200px) {
+    .grid-margin-xl-0 {
+      margin-bottom: 0;
+    }
+  }
+  .bg-gradient-primary {
+    background: linear-gradient(to right, #da8cff, #9a55ff);
+  }
+  
+  .bg-gradient-secondary {
+    background: linear-gradient(to right, #e7ebf0, #868e96);
+  }
+  
+  .bg-gradient-success {
+    background: linear-gradient(to right, #84d9d2, #07cdae);
+  }
+  
+  .bg-gradient-info {
+    background: linear-gradient(to right, #90caf9, #047edf 99%);
+  }
+  
+  .bg-gradient-warning {
+    background: linear-gradient(to right, #f6e384, #ffd500);
+  }
+  
+  .bg-gradient-danger {
+    background: linear-gradient(to right, #ffbf96, #fe7096);
+  }
+  
+  .bg-gradient-light {
+    background: linear-gradient(to bottom, #f4f4f4, #e4e4e9);
+  }
+  
+  .bg-gradient-dark {
+    background: linear-gradient(89deg, #5e7188, #3e4b5b);
+  }
+  .card.card-img-holder {
+    position: relative;
+  }
+  
+  .card.card-img-holder .card-img-absolute {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+  }
+
+
+
+  /* css Header */
+  .page-title {
+    color: #000;
+    font-size: 1.125rem;
+    margin-bottom: 0;
+  }
+  .page-title .page-title-icon {
+    display: inline-block;
+    width: 36px;
+    height: 65px;
+    border-radius: 4px;
+    text-align: center;
+    box-shadow: 0px 3px 8.3px 0.7px rgba(163, 93, 255, 0.35);
+  }
+  .page-title .page-title-icon i {
+    font-size: 1.5rem;
+    line-height: 36px;
+  }
+  .mr-2 {
+    margin-right: 0.5rem !important;
+  }
+  .page-header {
+    align-items: center !important;
+    justify-content: space-between !important;
+    display: flex !important;
+    margin: 0 0 1.5rem 0;
+  }
+  .page-header .breadcrumb {
+    border: 0;
+    margin-bottom: 0;
+  }

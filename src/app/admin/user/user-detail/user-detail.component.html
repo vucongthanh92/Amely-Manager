@@ -1,0 +1,78 @@
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card-box">
+            <div class="clearfix"></div>
+            <h4 class="header-title m-t-0 m-b-30">{{ 'USER DETAIL' | translate }}</h4>
+            <div class="row" *ngIf="user">
+                <div class="col-lg-6">
+                    <table class="table table-bordered table-striped">
+                        <tbody>
+                            <tr>
+                                <td width="25%" class="font-weight-bold">{{ 'ID' | translate }}</td>
+                                <td width="75%">{{ user.id }}</td>
+                            </tr>
+                            <tr>
+                                <td width="25%" class="font-weight-bold">{{ 'USER NAME' | translate }}</td>
+                                <td width="75%">{{ user.username }}</td>
+                            </tr>
+                            <tr>
+                                <td width="25%" class="font-weight-bold">{{ 'OWNER NAME' | translate }}</td>
+                                <td width="75%">{{ user.fullname }}</td>
+                            </tr>
+                            <tr>
+                                <td width="25%" class="font-weight-bold">{{ 'PHONE' | translate }}</td>
+                                <td width="75%">{{ user.mobilelogin }}</td>
+                            </tr>
+                            <tr>
+                                <td width="25%" class="font-weight-bold">{{ 'EMAIL' | translate }}</td>
+                                <td width="75%">{{ user.email }}</td>
+                            </tr>
+                            <tr>
+                                <td width="25%" class="font-weight-bold">{{ 'CUSTOMER ADDRESS' | translate }}</td>
+                                <td width="75%">{{ user.full_address }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-lg-6">
+                    <table class="table table-bordered table-striped">
+                        <tbody>
+                            <tr>
+                                <td width="25%" class="font-weight-bold">{{ 'BIRTHDAY' | translate }}</td>
+                                <td width="75%">{{ user.birthdate | date:'dd-MM-yyyy'}}</td>
+                            </tr>
+                            <tr>
+                                <td width="25%" class="font-weight-bold">{{ 'GENDER' | translate }}</td>
+                                <td width="75%">
+                                    <span *ngIf="user.gender == 'male'; else female">
+                                        {{ 'MALE' | translate }}
+                                    </span>
+                                    <ng-template #female>{{ 'FEMALE' | translate }}</ng-template>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="25%" class="font-weight-bold">{{ 'GIFT COUNT' | translate }}
+                                </td>
+                                <td width="75%">{{ user.gift_count }}</td>
+                            </tr>
+                            <tr>
+                                <td width="25%" class="font-weight-bold">{{ 'CURRENCY' | translate }}</td>
+                                <td width="75%">{{ user.usercurrency }}</td>
+                            </tr>
+                            <tr>
+                                <td width="25%" class="font-weight-bold">{{ 'LAST LOGIN' | translate }}</td>
+                                <td width="75%">{{user.last_login * 1000 | date:'dd-MM-yyyy H:mm:ss'}}</td>
+                            </tr>
+                            <tr>
+                                <td width="25%" class="font-weight-bold">{{ 'TYPE' | translate }}</td>
+                                <td width="75%">{{ user.type }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- end row -->
+    </div>
+</div>
+<!-- end col -->

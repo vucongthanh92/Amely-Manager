@@ -1,0 +1,182 @@
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card-box table-responsive">
+            <div class="col-xl-auto">
+                <h4 class="page-title" style="color: #6c757d;" *ngIf="delivery">{{ 'DELIVERY DETAIL' | translate }}
+                    #{{delivery.display_order}} -
+                    <i style="color: #242424;" *ngIf="delivery.status == 0; else notStatus">{{ 'PENDING' | translate }}</i>
+                    <ng-template #notStatus>
+                        <i style="color: #10c469;" *ngIf="delivery.status">{{ 'SUCCESS' | translate }}</i>
+                    </ng-template>
+                </h4>
+            </div>
+            <div class="clearfix"></div>
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="card m-b-20">
+                        <div class="card-header font-weight-bold">
+                            {{ 'RECEIVER ADDRESS' | translate }}
+                        </div>
+                        <div class="card-body">
+                            <blockquote class="card-bodyquote">
+                                <div class="row">
+                                    <table class="table table-bordered table-striped" *ngIf="delivery.po">
+                                        <tbody>
+                                            <tr>
+                                                <td><label class="font-weight-bold">{{ delivery.po.shipping_fullname }}</label></td>
+                                            </tr>
+                                            <tr>
+                                                <td>{{ delivery.po.shipping_full_address }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>{{ 'CUSTOMER PHONE' | translate }} : {{ delivery.po.shipping_phone
+                                                    }}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </blockquote>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="card m-b-20">
+                        <div class="card-header font-weight-bold">
+                            {{ 'DELIVERY METHOD' | translate }}
+                        </div>
+                        <div class="card-body">
+                            <blockquote class="card-bodyquote">
+                                <table class="table table-bordered table-striped" *ngIf="delivery.po">
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <p *ngIf="delivery.po.shipping_method == 'sq/storage'">{{ 'Kho của tôi'
+                                                    | translate }}</p>
+                                                <p *ngIf="delivery.po.shipping_method == 'sq/pickup'">{{ 'Nhận tại cửa
+                                                    hàng' | translate }}</p>
+                                                <p *ngIf="delivery.po.shipping_method == 'sq/express'">{{ 'Giao hàng
+                                                    tiết kiệm' | translate }}</p>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                {{ 'SHIPPING FEE' | translate }} :
+                                                {{ formatAmount(delivery.shipping_fee) }}
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </blockquote>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="card m-b-20">
+                        <div class="card-header font-weight-bold">
+                            {{ 'PAYMENT METHOD' | translate }}
+                        </div>
+                        <div class="card-body">
+                            <blockquote class="card-bodyquote">
+                                <table class="table table-bordered table-striped">
+                                    <tbody>
+                                        <tr *ngIf="delivery.po">
+                                            <td>
+                                                <p *ngIf="delivery.po.payment_method == 'onepay/opatm'">{{ 'Tài khoản
+                                                    Paypal' | translate }}</p>
+                                                <p *ngIf="delivery.po.payment_method == 'paypal/standard'">{{ 'OnePay
+                                                    thẻ ATM nội địa' | translate }}</p>
+                                                <p *ngIf="delivery.po.payment_method == 'onepay/opcreditcard'">{{
+                                                    'OnePay thẻ quốc tế Visa/Master' | translate }}</p>
+                                                <p *ngIf="delivery.po.payment_method == 'quickpay/cod'">{{ 'Tiền mặt
+                                                    giao hàng' | translate }}</p>
+                                                <p *ngIf="delivery.po.payment_method == 'quickpay/cos'">{{ 'Tiền mặt,
+                                                    hàng vào kho' | translate }}</p>
+                                            </td>
+                                        </tr>
+                                        <tr *ngIf="delivery">
+                                            <td>
+                                                <label style="color: red;" *ngIf="delivery.status == 0; else notStatus">{{
+                                                    'PENDING' | translate }}</label>
+                                                <ng-template #notStatus>
+                                                    <label style="color: #10c469;" *ngIf="delivery.status">{{ 'SUCCESS'
+                                                        |
+                                                        translate }}</label>
+                                                </ng-template>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </blockquote>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="m-b-20">
+                        <table id="datatable" class="table table-bordered text-center tg">
+                            <thead>
+                                <tr>
+                                    <th>{{ 'PRODUCT' | translate }}</th>
+                                    <th>{{ 'PRICE' | translate }}</th>
+                                    <th>{{ 'QUANTITY' | translate }}</th>
+                                    <th>{{ 'TAX' | translate }}</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <tr *ngFor="let item of delivery.items">
+                                    <td>
+                                        <div class="row">
+                                            <div class="col-md-auto">
+                                                <img class="imagesProduct" src="{{item.images[0]}}">
+                                            </div>
+                                            <div class="col-md-auto text-left">
+                                                <p class="font-weight-bold">{{item.title}}</p>
+                                                <p for="">Sku : {{item.sku}}</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        {{ formatAmount(item.display_price) }}
+
+                                    </td>
+                                    <td>
+                                        {{item.display_quantity}}
+                                    </td>
+                                    <td>
+                                        {{ item.tax }}%
+                                    </td>
+                                </tr>
+                                <tr class="border-0">
+                                    <td></td>
+                                    <td></td>
+                                    <td style="text-align:right; color: #999">
+                                        <div>Tổng tạm tính : </div>
+                                        <div>Phí vận chuyển : </div>
+                                        <div>Tổng cộng : </div>
+                                    </td>
+                                    <td style="text-align:right" *ngIf="delivery.so">
+                                        <div>{{ formatAmount(delivery.so.total) }}</div>
+                                        <div>{{ formatAmount(delivery.so.shipping_fee) }}</div>
+                                        <div style="color:red" class="font-weight-bold">{{ formatAmount(total) }}</div>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p style="margin: 5px; text-align: right;">
+                            <i style="color: #999">
+                                * Đã bao gồm thuế
+                            </i>
+                        </p>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+        <!-- end row -->
+    </div>
+</div>
+<!-- end col -->

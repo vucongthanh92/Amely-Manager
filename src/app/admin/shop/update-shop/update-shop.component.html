@@ -1,0 +1,93 @@
+<div class="row">
+        <div class="col-lg-12">
+            <div class="card-box">
+                    <div class="page-header">
+                            <h3 class="page-title">
+                                <span class="page-title-icon bg-gradient-info text-white mr-2">
+                                    <i class="fa fa-bank"></i>
+                                </span>
+                                {{ 'SHOP UPDATE' | translate }}
+                            </h3>
+                        </div>
+                <!-- <h4 class="header-title m-t-0 m-b-30">{{ 'SHOP UPDATE' | translate }}</h4> -->
+                <a (click)="updateShop()" target="_self" class="pull-right btn btn-outline-success btn-fw" [ladda]="isLoading"><i class="fa fa-check"></i> {{ 'SAVE' | translate }}</a>
+                <div class="row" *ngIf="shop">
+                    <div class="col-md-6">
+                        <div class="p-20">
+                            <div class="form-group">
+                                <label>{{ 'TITLE SHOP' | translate }}</label>
+                                <input type="text" placeholder="" class="form-control" [(ngModel)]="title">
+                            </div>
+    
+                            <div class="form-group">
+                                <label>{{ 'SHOP BIDN' | translate }}</label>
+                                <input type="text" placeholder="" [(ngModel)]="shop_bidn" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                    <label>{{ 'IMAGE AVATAR' | translate }} <label class="">*</label></label>
+                                    <br>
+                                    <input type="file" multiple (change)="detectFilesAvatar($event)">
+                                    <div *ngIf="avatarUrl" class="category_image">
+                                        <img [src]="avatarUrl" onError="this.src='assets/images/profile.jpg'" class="rounded mb-3">
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+                    <!-- end col -->
+    
+                    <div class="col-md-6">
+                        <div class="p-20">
+                            <div class="form-group">
+                                <label>{{ 'OWNER SSN' | translate }}</label>
+                                <input type="number" [(ngModel)]="owner_ssn" placeholder="" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label>{{ 'FRIEND URL' | translate }}</label>
+                                <input type="text" placeholder="" [(ngModel)]="friendly_url" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                    <label>{{ 'IMAGE COVER' | translate }} <label class="">*</label></label>
+                                    <br>
+                                    <input type="file" multiple (change)="detectFilesCover($event)">
+                                    <div *ngIf="coverUrl" class="category_image">
+                                        <img [src]="coverUrl" onError="this.src='assets/images/profile.jpg'" class="rounded mb-3">
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+                    <!-- end col -->
+                </div>
+                <!-- end row -->
+    
+            </div>
+        </div>
+        <!-- end col -->
+    </div>
+    <div class="row" *ngIf="shop">
+        <div class="col-lg-12">
+            <div class="card-box">
+                <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>{{ 'POLICY' | translate }}</label>
+                                <editor [(ngModel)]="policy"></editor>
+                            </div>
+                            <div class="form-group">
+                                <label>{{ 'DESCRIPTION' | translate }}</label>
+                                <editor [(ngModel)]="description"></editor>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>{{ 'CONTACT' | translate }}</label>
+                                <editor [(ngModel)]="contact"></editor>
+                            </div>
+                            <div class="form-group">
+                                <label>{{ 'INTRODUCE' | translate }}</label>
+                                <editor [(ngModel)]="introduce"></editor>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
